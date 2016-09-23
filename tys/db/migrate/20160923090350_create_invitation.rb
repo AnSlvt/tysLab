@@ -1,4 +1,4 @@
-class CreateInvitation < ActiveRecord::Migration
+class CreateInvitations < ActiveRecord::Migration
   def change
     create_table :invitations do |t|
       t.string :leader_name, null: false
