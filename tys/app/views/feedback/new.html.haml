@@ -1,0 +1,5 @@
+= form_tag "/create" method: :post do
+  = select_tag "feedback_type", raw("<option value="bugreport">Bug Report</option><option value="feedback">Application Feedback</option>") placeholder: "Choose one of this option" required: true
+  = text_area_tag 'text', rows: 10, cols: 25 placeholder: "Write here your message" required: true
+  = email_field_tag "email" placeholder: "Enter your email if you want to receive an answer" required: false
+  = submit_tag "Submit"
