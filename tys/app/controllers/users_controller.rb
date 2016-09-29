@@ -53,10 +53,7 @@ class UsersController < ApplicationController
             state: @@state }
     uri.query = URI.encode_www_form(prm)
     res = Net::HTTP.post_form(uri, "q" => uri.query)
-    reg_try = res.body.scan(/\=([a-z0-9]+)&\1 in/)
-    logger.info "REGEX #{reg_try}"
-    temp = res.body.scan(/\=[a-z0-9]*&/)[0]
-    temp.slice(1, temp.size - 2)
+    res.body.scan(/\=([a-z0-9]*)&/)[0][0]
   end
 
 end
