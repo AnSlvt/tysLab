@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+%html
+  %head
+    %title Tys
+  %body
+    %table
+      %tr
+        %td = @app.title
+        %td = link_to "Repo GitHub"
+        %td = link_to "Show team members"
+
+      = @reports.each do |stack|
+        %tr
+          %td = stack.type
+          %td = stack.occurrences
+          %td = check_box_tag "Fixed", "1", stack.fixed
+          %td = link_to "Issues"
+          %td = link_to "Create issue"
