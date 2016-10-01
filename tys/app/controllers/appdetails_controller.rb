@@ -1,6 +1,7 @@
 class AppDetailsController < ActionController::Base
 
-  def stack_traces
-    @reports ||= StackTrace.find_by(app: @current_app) if @current_app
+  def load_details
+    @app = Application.find(params[:id])
+    @reports ||= StackTrace.where(app: @app.id) if @app
   end
 end
