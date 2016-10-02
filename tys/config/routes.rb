@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  #TODO: generate missing routes
+  #TODO: insert link_to and redirect_to after generating all the routes
+  #TO FIX: routes about applications not working
+
+  #resources :applications
+  #show applications details
+  #get 'applications/show/:id'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

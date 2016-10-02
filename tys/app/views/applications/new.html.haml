@@ -1,0 +1,13 @@
+%h1 New application
+= form_tag user_applications_path(@application) do
+
+  = label :application, :application_name, 'Name'
+  = text_field :application, :application_name
+
+  = label :application, :author, 'Author'
+  = @current_user.name
+
+  = label :application, :programming_language, 'Programmming Language'
+  = select :application, :programming_language, ['C#', 'Objective-C', 'Android', 'Other']
+
+  = submit_tag 'Create'

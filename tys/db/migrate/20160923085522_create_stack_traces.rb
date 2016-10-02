@@ -1,4 +1,4 @@
-class CreateStackTrace < ActiveRecord::Migration
+class CreateStackTraces < ActiveRecord::Migration
   def change
     create_table :stack_traces do |t|
       t.integer :application_id, null: false

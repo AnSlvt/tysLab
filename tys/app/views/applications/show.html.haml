@@ -1,0 +1,19 @@
+%h1 Details about #(@application.application_name)
+%ul
+  %li
+    Name:
+    = @application.application_name
+  %li
+    Author:
+    = @application.author
+  %li
+    programming_langage:
+    = @application.programming_langage
+
+%h2 Stack Traces list:
+  %ul
+    #continue here...
+
+= link_to 'See the GitHub repo', = @application.github_repository
+
+#probably must be corrected
