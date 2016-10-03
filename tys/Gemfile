@@ -25,6 +25,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'octokit'
 gem 'haml'
+gem 'spectator-validates_email', :require => 'validates_email'
+
 
 group :test do
   gem 'rspec-rails'
