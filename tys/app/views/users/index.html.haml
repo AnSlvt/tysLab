@@ -9,19 +9,19 @@
 
 %h2 Application list:
 
-- if current_user.applications
-  tu madre
-  %ul
-    - current_user.applications.each do |application|
-      %li
-        = application.application_name
-        Role:
-        - if application.author == @user.name
-          = "team leader"
-        - else
-          = "contributor"
-        = link_to "Go to the app page", applications_path(application)
-- else
-  No applications yet
+%ul
+  - current_user.applications.each do |application|
+    %li
+      = application.application_name
+      Role:
+      - if application.author == current_user.name
+        = "team leader"
+      - else
+        = "contributor"
+      = link_to "Go to the app page",
+        user_application_path(current_user, application), method: :get
 
+= button_to "Add a new application",
+            new_user_application_path(current_user),
+            method: :get
 = button_to "Logout", users_logout_path, method: :get

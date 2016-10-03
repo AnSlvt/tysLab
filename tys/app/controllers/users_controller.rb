@@ -36,6 +36,10 @@ class UsersController < ApplicationController
   end
 
   def index
+    @applications = Application.all
+    logger.info "APP #{@applications}"
+    @applications = current_user.applications
+    logger.info "APP2 #{@applications}"
   end
 
   private

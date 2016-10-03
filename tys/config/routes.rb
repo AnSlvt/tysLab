@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
 
   root to: "homepage#index"
-  #resources :users
+
+  # Users routes and applications routes
+  resources :users, only: :index do
+    resources :applications
+  end
   get 'users/login' => 'users#login'
   get 'users/authorize' => 'users#authorize'
   get 'users/logout' => 'users#logout'

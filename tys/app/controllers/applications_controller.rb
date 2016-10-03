@@ -7,6 +7,8 @@ class ApplicationsController < ApplicationController
   #creates a new application, which author is the current user (redirection to a form that execute a POST to invoke the create method)
   def new
     #@application = @current_user.applications.build #does it render the creation form?
+    @application = Application.new
+    logger.info "Method new for application called #{@application}"
   end
   #alternative
   #def new
@@ -17,7 +19,8 @@ class ApplicationsController < ApplicationController
   def create
     #@current_user.applications << @current_user.applications.build(params[:application]) #not sure if it's possible
     #@application.save!
-    @application.create!(create_params)
+    @application = Application.create!(create_params)
+    @application.users << current_user
     flash[:notice] = "#{@application.application_name} was successfully created."
   end
   #alternative
