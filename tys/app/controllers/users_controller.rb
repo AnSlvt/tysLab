@@ -53,6 +53,8 @@ class UsersController < ApplicationController
             state: @@state }
     uri.query = URI.encode_www_form(prm)
     res = Net::HTTP.post_form(uri, "q" => uri.query)
+    #logger.info "#{JSON.parse(res.body)}"
+    #logger.info "#{res.body.match(/\=([a-z0-9]*)&/)}"
     res.body.scan(/\=([a-z0-9]*)&/)[0][0]
   end
 
