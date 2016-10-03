@@ -1,4 +1,4 @@
-class CreateFeedback < ActiveRecord::Migration
+class CreateFeedbacks < ActiveRecord::Migration
   def change
     create_table :feedbacks do |t|
       t.text :text, null: false

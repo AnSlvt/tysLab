@@ -14,10 +14,12 @@
 ActiveRecord::Schema.define(version: 20160923095825) do
 
   create_table "applications", force: :cascade do |t|
-    t.string   "application_name", limit: 255, null: false
-    t.string   "author",           limit: 255, null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.string   "application_name",     limit: 255, null: false
+    t.string   "author",               limit: 255, null: false
+    t.string   "programming_language", limit: 255, null: false
+    t.string   "github_repository",    limit: 255, null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   create_table "contributors", force: :cascade do |t|
