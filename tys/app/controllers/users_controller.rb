@@ -5,32 +5,37 @@ class UsersController < ApplicationController
   @@state = ""
 
   def login
-    if @@state.to_s == ""
-      get_request_code
-    else
-      code = params[:code]
-      access_token = get_access_token(code)
-      @@state = ""
-      client = Octokit::Client.new(access_token: access_token)
-      user = client.user
-      session[:user_id] = user.login.to_s
-      flash[:notice] = "#{user.login} succesfully logged in!"
-      @user = User.find_by(name: user.login.to_s)
-      if (!@user)
-        begin
-          @user = User.create!(name: user.login.to_s,
-                               email: client.emails[0][:email].to_s)
-        rescue RecordInvalid
-          render file: 'public/500.html' and return
-        end
+    get_request_code
+  end
+
+  def authorize
+    code = params[:code]
+    access_token = get_access_token(code)
+    @@state = ""
+    client = Octokit::Client.new(access_token: access_token)
+    user = client.user
+    session[:user_id] = user.login.to_s
+    flash[:notice] = "#{user.login} succesfully logged in!"
+    logger.info "Executed the flash"
+    @user = User.find_by(name: user.login.to_s)
+    if (!@user)
+      begin
+        @user = User.create!(name: user.login.to_s,
+                             email: client.emails[0][:email].to_s)
+      rescue RecordInvalid
+        render file: 'public/500.html' and return
       end
     end
+    redirect_to "/users/index"
   end
 
   def logout
     session[:user_id] = nil
     redirect_to '/'
     flash[:notice] = "Logged out!"
+  end
+
+  def index
   end
 
   private
