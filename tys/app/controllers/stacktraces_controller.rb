@@ -1,5 +1,9 @@
 class StackTraceDetailsController < ActionController::Base
 
+  def new
+    StackTrace.new
+  end
+
   def show_details
 
     # Get the current stack trace

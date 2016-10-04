@@ -1,4 +1,4 @@
-%h1 Details about #(@application.application_name)
+%h1= "Details about #{@application.application_name}"
 %ul
   %li
     Name:
@@ -7,13 +7,23 @@
     Author:
     = @application.author
   %li
-    programming_langage:
-    = @application.programming_langage
+    programming_language:
+    = @application.programming_language
 
 %h2 Stack Traces list:
-%ul
-  #continue here...
+%table
+  %thead
+    %tr
+      %th Application Version
+      %th Issues
+      %th Create Issue
+      %th Details
+  - @reports.each do |stack|
+    %tr
+      %td= stack.application_version
+      - # %td= check_box_tag "Fixed", "1", stack.fixed
+      %td= link_to "Issues", "#"
+      %td= link_to "Create issue", "#"
+      %td= link_to "Details", "#"
 
-= link_to 'See the GitHub repo', = @application.github_repository
-
-#probably must be corrected
+= link_to 'See the GitHub repo', @application.github_repository
