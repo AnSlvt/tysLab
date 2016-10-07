@@ -7,6 +7,5 @@
     = csrf_meta_tags
 %body
   = yield
-  = Rails.env
   - if flash[:notice]
     = flash[:notice]

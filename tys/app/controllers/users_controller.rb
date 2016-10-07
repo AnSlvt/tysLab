@@ -16,7 +16,6 @@ class UsersController < ApplicationController
     user = client.user
     session[:user_id] = user.login.to_s
     flash[:notice] = "#{user.login} succesfully logged in!"
-    logger.info "Executed the flash"
     @user = User.find_by(name: user.login.to_s)
     if (!@user)
       begin
@@ -26,7 +25,10 @@ class UsersController < ApplicationController
         render file: 'public/500.html' and return
       end
     end
-    redirect_to "/users/index"
+    redirect_to user_applications_path(current_user), method: :get
+  end
+
+  def show
   end
 
   def logout
@@ -35,17 +37,11 @@ class UsersController < ApplicationController
     flash[:notice] = "Logged out!"
   end
 
-  def index
-    @applications = Application.all
-    logger.info "APP #{@applications}"
-    @applications = current_user.applications
-    logger.info "APP2 #{@applications}"
-  end
-
   private
 
   def get_request_code
     uri = URI("https://github.com/login/oauth/authorize")
+    logger.info "redirect_to #{uri}"
     @@state = SecureRandom.base64
     params = { client_id: ENV['client_id'],
                scope: "user,repo",
@@ -56,6 +52,7 @@ class UsersController < ApplicationController
 
   def get_access_token(code)
     uri = URI('https://github.com/login/oauth/access_token')
+    logger.info "redirect_to #{uri}"
     prm = { client_id: ENV['client_id'],
             client_secret: ENV['client_secret'],
             code: code,

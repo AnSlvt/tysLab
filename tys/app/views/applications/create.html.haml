@@ -3,4 +3,4 @@
 %h2= "Author: #{@application.author}"
 
 = button_to "Back to #{@application.author} main page",
-  users_path, method: :get
+  user_applications_path(current_user), method: :get

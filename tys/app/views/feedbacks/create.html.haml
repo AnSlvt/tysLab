@@ -1,0 +1,3 @@
+= @feedback.text
+- if session[:user_id]
+  = button_to "Destroy", application_feedback_path(@feedback.application_id, @feedback), method: :delete

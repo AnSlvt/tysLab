@@ -1,0 +1,12 @@
+- unless @applications == [] 
+  %h2 Applications
+  %br
+  = @applications.each do |r|
+    = r.application_name
+    = r.author
+    = link_to "Github", r.github_repository
+
+- if @user
+  %h2 User
+  = @user.name
+  = link_to "User Applications", "#"

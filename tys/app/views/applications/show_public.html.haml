@@ -1,0 +1,42 @@
+%h1= "Details about #{@application.application_name}"
+%ul
+  %li
+    Name:
+    = @application.application_name
+    %br
+  %li
+    Author:
+    = @application.author
+
+- @feedbacks.each do |f|
+  %p= f.user_name
+  Text:
+  %p= f.text
+  %p= f.feedback_type
+  %br
+
+= form_tag application_feedbacks_path(@application), method: :post do
+
+  = label_tag :text, "Text"
+  %br
+  = text_area_tag :text
+
+  %br
+  %br
+  = label_tag :user_name, "User Name"
+  = text_field_tag :user_name
+
+  %br
+  %br
+  = label_tag :feedback_type, "Feedback type"
+  %br
+  = select_tag :feedback_type, options_for_select(["Bug Report", "Feedback"], "Bug Report"), required: true
+
+  %br
+  %br
+  = label_tag :email, "Email (optional)"
+  = email_field_tag :email, 'example@mail.com', required: false
+
+  %br
+  %br
+  = submit_tag "Submit"

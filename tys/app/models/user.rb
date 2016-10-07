@@ -6,12 +6,6 @@ class User < ActiveRecord::Base
 
 #  validates :email
 
-  def created_applications
-    self.applications.each do |application|
-      application.where(author: self.id)
-    end
-  end
-
   # When a team leader look for another user, we use this function
   def user_research
     self.user.each do |user|
