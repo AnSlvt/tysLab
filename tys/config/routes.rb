@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   get 'users_authorize' => 'users#authorize'
   get 'users_logout' => 'users#logout'
 
-  get "applications/:id/details" => "appdetails#load_details"
   get "stacktraces/:id/details" => "stacktraces#show_details"
 
 end

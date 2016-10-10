@@ -26,7 +26,7 @@ class ApplicationsController < ApplicationController
 
   def show_public
     @application = Application.find(params[:id])
-    @feedbacks = Feedback.where(application_id: @application)
+    @feedbacks = @application.feedbacks
   end
 
   private

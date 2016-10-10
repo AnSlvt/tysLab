@@ -1,10 +1,11 @@
-- unless @applications == [] 
+- unless @applications == []
   %h2 Applications
   %br
-  = @applications.each do |r|
+  - @applications.each do |r|
     = r.application_name
     = r.author
     = link_to "Github", r.github_repository
+    = link_to "Details", user_application_show_public_path(r.author, r)
 
 - if @user
   %h2 User
