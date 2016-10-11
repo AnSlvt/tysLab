@@ -27,3 +27,12 @@
       %td= link_to "Details", "#"
 
 = link_to 'See the GitHub repo', @application.github_repository
+
+%h2 Feedbacks List:
+- @feedbacks.each do |f|
+  %p= f.user_name
+  %b Text:
+  %p= f.text
+  %p= f.feedback_type
+  =button_to "Answer", application_new_feedback_path(@application, f.id), :method => :get
+  %br

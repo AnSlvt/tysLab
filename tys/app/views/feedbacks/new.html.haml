@@ -1,0 +1,27 @@
+%h1 Create new feedback
+
+= form_tag application_feedbacks_path(@application.id), method: :post do
+
+  = label_tag :text, "Text"
+  %br
+  = text_area_tag :text
+
+  %br
+  %br
+  = label_tag :user_name, "User Name"
+  = text_field_tag :user_name
+
+  %br
+  %br
+  = label_tag :feedback_type, "Feedback type"
+  %br
+  = select_tag :feedback_type, options_for_select(["Bug Report", "Feedback"], "Bug Report"), required: true
+
+  %br
+  %br
+  = label_tag :email, "Email (optional)"
+  = email_field_tag :email, 'example@mail.com', required: false
+  = hidden_field_tag :parent_id, params[:parent_id]
+  %br
+  %br
+  = submit_tag "Submit"

@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   end
 
   resources :application, only: '' do
-    resources :feedbacks
+    resources :feedbacks, except: [:new,:show,:index]
+    get "feedbacks/:parent_id/" => "feedbacks#new", as: "new_feedback"
+    #post "response_feedback/create/:parent_id" => "feedbacks#create_response", as: "create_response_feedback"
   end
 
   get 'users_login' => 'users#login'

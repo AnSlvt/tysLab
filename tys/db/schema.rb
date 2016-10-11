@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160923095825) do
+ActiveRecord::Schema.define(version: 20161010153256) do
 
   create_table "applications", force: :cascade do |t|
     t.string   "application_name",     limit: 255, null: false
@@ -29,14 +29,6 @@ ActiveRecord::Schema.define(version: 20160923095825) do
     t.datetime "updated_at",                 null: false
   end
 
-  create_table "feedback_responses", force: :cascade do |t|
-    t.integer  "response_id",     limit: 4,   null: false
-    t.integer  "target_id",       limit: 4,   null: false
-    t.string   "response_author", limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "feedbacks", force: :cascade do |t|
     t.text     "text",           limit: 65535, null: false
     t.string   "feedback_type",  limit: 255,   null: false
@@ -45,6 +37,7 @@ ActiveRecord::Schema.define(version: 20160923095825) do
     t.string   "user_name",      limit: 255
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "parent_id",      limit: 4
   end
 
   create_table "invitations", force: :cascade do |t|

@@ -9,6 +9,7 @@ class ApplicationsController < ApplicationController
     render file: "public/404.html" and return unless @application
     #@reports = StackTrace.where(app: @application.id) if @application
     @reports = @application.stack_traces
+    @feedbacks = Feedback.where(application_id: params[:id])
   end
 
   def new
