@@ -35,4 +35,6 @@
   %p= f.text
   %p= f.feedback_type
   =button_to "Answer", application_new_feedback_path(@application, f.id), :method => :get
+  =button_to "Edit", edit_application_feedback_path(@application, f.id), :method => :get if f.user_name == session[:user_id]
+  =button_to "Delete", application_feedback_path(@application, f.id), :method => :delete if f.user_name == session[:user_id]
   %br
