@@ -1,13 +1,15 @@
 Rails.application.routes.draw do
 
-  root to: "homepage#index"
-  get "/search_results" => "homepage#search"
+  root to: 'homepage#index'
+  get '/search_results' => 'homepage#search'
+  get '/user_search' => 'homepage#search_user'
 
   # Users routes and applications routes
   resources :users, only: :show do
-    get "applications/:id/show_public" => "applications#show_public", as: "application_show_public"
+    get 'applications/:id/show_public' => 'applications#show_public', as: 'application_show_public'
     resources :applications do
       resources :stack_traces
+      resources :invitations, only: [:create, :destroy]
     end
   end
 
