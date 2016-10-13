@@ -18,3 +18,4 @@ tys/tmp
 tys/config/env.*.yml
 tys/config/database.yml
 tys/config/secrets.yml
+tys/config/environments/*

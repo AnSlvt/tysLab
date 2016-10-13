@@ -14,6 +14,11 @@ class FeedbacksController < ApplicationController
     app_id = @feedback.application_id
     user_id = Application.find(app_id).author
     if  session[:user_id]
+      if @feedback.parent_id
+        parent_feedback = Feedback.find(@feedback.parent_id)
+        parent_user = User.find(parent_feedback.user_name)
+        FeedbackMailer.response_email(parent_user, @feedback).deliver_now if parent_user
+      end
       redirect_to user_application_path(user_id, app_id)
     else
       redirect_to user_application_show_public_path(user_id, app_id)
