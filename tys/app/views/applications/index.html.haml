@@ -1,22 +1,17 @@
-%h1= current_user.name
-%ul
-  %li
-    Name:
-    = current_user.name
-  %li
-    Email:
-    = current_user.email
-
-%h2 Application list:
+%h1 Application list:
 
 %ul
   - current_user.applications.each do |application|
+    /TODO order application by role
     %li
       = application.application_name
-      Role:
+
       - if application.author == current_user.name
+        Role:
         = "team leader"
+        = button_to 'Delete', user_application_path(current_user, application), :method => :delete
       - else
+        Role:
         = "contributor"
       = link_to "Go to the app page",
         user_application_path(current_user, application), method: :get
