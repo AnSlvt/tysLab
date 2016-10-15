@@ -24,6 +24,10 @@ class ApplicationsController < ApplicationController
   def index
   end
 
+  def team_members
+    @application = Application.find(params[:id])
+  end
+
   def show_public
     @application = Application.find(params[:id])
     @feedbacks = @application.feedbacks
