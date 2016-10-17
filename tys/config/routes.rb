@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users, only: :show do
     get 'applications/:id/show_public' => 'applications#show_public', as: 'application_show_public'
     resources :applications do
+      post 'add_contribs/:repo' => 'applications#add_github_contribs', as: 'add_github_contribs'
       resources :stack_traces
       resources :invitations, only: [:create, :destroy] do
         get "/accept/:token" => "invitations#accept", as: "accept_invitation"

@@ -12,15 +12,15 @@ class UsersController < ApplicationController
     code = params[:code]
     access_token = get_access_token(code)
     @@state = ""
-    client = Octokit::Client.new(access_token: access_token)
-    user = client.user
+    @@client = Octokit::Client.new(access_token: access_token)
+    user = @@client.user
     session[:user_id] = user.login.to_s
     flash[:notice] = "#{user.login} succesfully logged in!"
     @user = User.find_by(name: user.login.to_s)
     if (!@user)
       begin
         @user = User.create!(name: user.login.to_s,
-                             email: client.emails[0][:email].to_s)
+                             email: @@client.emails[0][:email].to_s)
       rescue RecordInvalid
         render file: 'public/500.html' and return
       end
@@ -35,9 +35,17 @@ class UsersController < ApplicationController
 
   def logout
     session[:user_id] = nil
-    cookies.delete :octokit
     redirect_to '/'
     flash[:notice] = "Logged out!"
+  end
+
+  def self.get_repos(user)
+    @@client.repos(user)
+  end
+
+  def self.get_github_contributors(repo)
+    repo = repo.sub('_', '/')
+    @@client.collabs(repo)
   end
 
   private

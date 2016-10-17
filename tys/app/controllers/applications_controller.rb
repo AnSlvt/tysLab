@@ -9,10 +9,19 @@ class ApplicationsController < ApplicationController
     render file: "public/404.html" and return unless @application
     #@reports = StackTrace.where(app: @application.id) if @application
     @reports = @application.stack_traces
+
+    # Used to retrieve the github collaborators
+    @github_param = @application.github_repository.sub("/", "_") unless @application.github_repository == ""
   end
 
   def new
     @application = Application.new
+    repos = UsersController.get_repos(current_user)
+    @repos = repos.map do |r|
+      r[:full_name] if r[:owner][:login] == current_user.name
+    end
+    @repos.delete nil
+    @repos.unshift nil
   end
 
   def create
@@ -23,6 +32,29 @@ class ApplicationsController < ApplicationController
 
   def index
     @invitations = Invitation.where(target_name: current_user)
+  end
+
+  def add_github_contribs
+    application = Application.find(params[:application_id])
+
+    # Control if the user is allowed
+    render file: 'public/404.html' and return unless session[:user_id] == params[:user_id]
+
+    # Get the github contribs and all the existings users and compute the intersection
+    contribs = UsersController.get_github_contributors(params[:repo])
+    auth_users = User.all
+    auth_users = auth_users.map { |u| u.name }
+    contribs = contribs.map! { |c| c[:login]}
+    existing_contribs = contribs & auth_users
+
+    # For all the existings users that are github contribs create a row in Contributor
+    existing_contribs.each do |c|
+      Contributor.create!({
+        user_id: c,
+        application_id: params[:application_id]
+      }) unless c == application.author
+    end
+    redirect_to application_team_members_path(params[:application_id])
   end
 
   def team_members
