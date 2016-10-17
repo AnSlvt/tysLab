@@ -7,6 +7,13 @@
     Email:
     = current_user.email
 
+%h3 Invitations
+%ul
+  - @invitations.each do |inv|
+    %li= "#{inv.leader_name} invited you"
+    = button_to "Delete", user_application_invitation_path(current_user, inv.application_id, inv),
+      method: :delete
+
 %h2 Application list:
 
 %ul
@@ -19,7 +26,7 @@
       - else
         = "contributor"
       = link_to "Go to the app page",
-        user_application_path(current_user, application), method: :get
+        user_application_path(application.author, application), method: :get
 
 = button_to "Add a new application",
             new_user_application_path(current_user),

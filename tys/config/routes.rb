@@ -9,7 +9,9 @@ Rails.application.routes.draw do
     get 'applications/:id/show_public' => 'applications#show_public', as: 'application_show_public'
     resources :applications do
       resources :stack_traces
-      resources :invitations, only: [:create, :destroy]
+      resources :invitations, only: [:create, :destroy] do
+        get "/accept/:token" => "invitations#accept", as: "accept_invitation"
+      end
     end
   end
 

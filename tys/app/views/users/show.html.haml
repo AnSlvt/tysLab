@@ -1,3 +1,4 @@
-- @user.applications.each do |app|
-  = button_to "Invite #{@user.name} to #{app.application_name}",
-    user_application_invitations_path(@user, app), method: :post
+- current_user.applications.each do |app|
+  - unless @user.in?(app.users)
+    = button_to "Invite #{@user.name} to #{app.application_name}",
+      user_application_invitations_path(@user, app), method: :post

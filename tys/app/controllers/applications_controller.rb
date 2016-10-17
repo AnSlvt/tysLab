@@ -22,6 +22,7 @@ class ApplicationsController < ApplicationController
   end
 
   def index
+    @invitations = Invitation.where(target_name: current_user)
   end
 
   def show_public
@@ -40,6 +41,5 @@ class ApplicationsController < ApplicationController
       render file: "public/404.html" and return
     end
   end
-
-  #TODO: (see pg.158) insert presence controls for current_user
+  
 end

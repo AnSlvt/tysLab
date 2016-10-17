@@ -25,7 +25,8 @@ class UsersController < ApplicationController
         render file: 'public/500.html' and return
       end
     end
-    redirect_to user_applications_path(current_user), method: :get
+
+    redirect_to user_applications_path(current_user), method: :get and return
   end
 
   def show
@@ -34,6 +35,7 @@ class UsersController < ApplicationController
 
   def logout
     session[:user_id] = nil
+    cookies.delete :octokit
     redirect_to '/'
     flash[:notice] = "Logged out!"
   end
@@ -48,7 +50,7 @@ class UsersController < ApplicationController
                scope: "user,repo",
                state: @@state.to_s }
     uri.query = URI.encode_www_form(params)
-    redirect_to uri.to_s, method: :get
+    redirect_to uri.to_s, method: :get and return
   end
 
   def get_access_token(code)
@@ -62,5 +64,4 @@ class UsersController < ApplicationController
     res = Net::HTTP.post_form(uri, "q" => uri.query)
     res.body.scan(/\=([a-z0-9]*)&/)[0][0]
   end
-
 end

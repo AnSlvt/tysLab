@@ -11,6 +11,9 @@ tys/.bundle
 tys/bin/
 tys/bin/*
 
+tys/config/environments/
+tys/config/environments/*
+
 # Ignore all logfiles and tempfiles.
 tys/log/*
 tys/!/log/.keep
