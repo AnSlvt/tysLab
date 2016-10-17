@@ -22,5 +22,6 @@ Rails.application.routes.draw do
   get 'users_logout' => 'users#logout'
 
   get "stacktraces/:id/details" => "stacktraces#show_details"
+  get "applications/:id/team_members" => "applications#team_members", as: "application_team_members"
 
 end

@@ -25,9 +25,22 @@ class ApplicationsController < ApplicationController
   def index
   end
 
+  def team_members
+    @application = Application.find(params[:id])
+  end
+
   def show_public
     @application = Application.find(params[:id])
     @feedbacks = @application.feedbacks
+  end
+
+  def destroy
+    @application = Application.find_by(author: params[:user_id], id: params[:id])
+    render file: "public/404.html" and return unless @application
+    render file: "public/403.html" and return unless @application.author == current_user.name
+    @application.destroy
+    flash[:notice] = "#{@application.application_name} was successfully deleted."
+    redirect_to user_applications_path
   end
 
   private
@@ -42,5 +55,4 @@ class ApplicationsController < ApplicationController
     end
   end
 
-  #TODO: (see pg.158) insert presence controls for current_user
 end
