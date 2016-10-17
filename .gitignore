@@ -18,4 +18,6 @@ tys/tmp
 tys/config/env.*.yml
 tys/config/database.yml
 tys/config/secrets.yml
-tys/config/environments/*
+tys/config/environments/development.rb
+tys/config/environments/test.rb
+tys/config/environments/production.rb
