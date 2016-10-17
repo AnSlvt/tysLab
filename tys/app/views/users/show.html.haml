@@ -1,3 +1,12 @@
+%h1= "Details about #{current_user.name}"
+%ul
+  %li
+    Name:
+    = current_user.name
+  %li
+    Email:
+    = current_user.email
+
 - current_user.applications.each do |app|
   - unless @user.in?(app.users)
     = button_to "Invite #{@user.name} to #{app.application_name}",
