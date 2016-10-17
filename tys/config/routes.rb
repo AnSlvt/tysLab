@@ -23,5 +23,7 @@ Rails.application.routes.draw do
 
   get "stacktraces/:id/details" => "stacktraces#show_details"
   get "applications/:id/team_members" => "applications#team_members", as: "application_team_members"
+  get "applications/:id/team_members/:user_id" => "applications#composition_mail", as: "composition_mail_tm"
+  post "applications/:id/team_members/:user_id" => "applications#send_mail", as: "send_mail_tm"
 
 end
