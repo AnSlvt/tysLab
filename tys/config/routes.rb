@@ -12,8 +12,13 @@ Rails.application.routes.draw do
   end
 
   resources :application, only: '' do
+    resources :contributors, only: [:index, :destroy]
     resources :feedbacks, except: [:new,:show,:index]
     get "feedbacks/:parent_id/" => "feedbacks#new", as: "new_feedback"
+    post "contributors/" => "contributors#composition_mail", as: "composition_mail_tm"
+    post "contributors/all" => "contributors#composition_all", as: "composition_all_tm"
+    post "send_mail" => "contributors#send_mail", as: "send_mail_tm"
+    post "send_all" => "contributors#send_all", as: "send_all_tm"
     #post "response_feedback/create/:parent_id" => "feedbacks#create_response", as: "create_response_feedback"
   end
 
@@ -22,8 +27,5 @@ Rails.application.routes.draw do
   get 'users_logout' => 'users#logout'
 
   get "stacktraces/:id/details" => "stacktraces#show_details"
-  get "applications/:id/team_members" => "applications#team_members", as: "application_team_members"
-  get "applications/:id/team_members/:user_id" => "applications#composition_mail", as: "composition_mail_tm"
-  post "applications/:id/team_members/:user_id" => "applications#send_mail", as: "send_mail_tm"
 
 end

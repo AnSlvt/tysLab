@@ -1,6 +1,6 @@
-class ApplicationsMailer < ApplicationMailer
+class ContributorsMailer < ApplicationMailer
   default from: 'traceyourstack@gmail.com'
-  layout "applications_mailer"
+  layout "contributors_mailer"
 
   def team_members_mail(application, sender, receiver, subject, text)
     @application = application
@@ -9,7 +9,6 @@ class ApplicationsMailer < ApplicationMailer
     @subject = subject
     @text = text
     mail(to: @receiver.email, subject: @subject)
-
   end
 
 end

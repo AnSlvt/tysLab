@@ -1,6 +1,6 @@
 %h1 Write here your email
 
-= form_tag send_mail_tm_path(@application.id, @user.name), method: :post do
+= form_tag application_send_all_tm_path(@application.id), method: :post do
 
     =label_tag :subject, "Subject"
     %br

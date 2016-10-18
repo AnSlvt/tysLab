@@ -1,8 +1,0 @@
-%h1= "#{@application.application_name} team members list"
-
-%ul
-  - @application.users.each do |user|
-    %li
-      = user.name
-      = link_to 'View profile', user_path(user)
-      = link_to "Send him an email", composition_mail_tm_path(@application, user)

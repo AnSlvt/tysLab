@@ -25,25 +25,6 @@ class ApplicationsController < ApplicationController
   def index
   end
 
-  def team_members
-    @application = Application.find(params[:id])
-  end
-
-  def composition_mail
-    @application = Application.find(params[:id])
-    @user = User.find(params[:user_id])
-  end
-
-  def send_mail
-    @application = Application.find(params[:id])
-    @user = User.find(params[:user_id])
-    subject = params[:subject]
-    text = params[:text]
-    sender = params[:sender]
-    ApplicationsMailer.team_members_mail(@application, sender, @user, subject, text).deliver_now
-    redirect_to application_team_members_path(@application.id)
-  end
-
   def show_public
     @application = Application.find(params[:id])
     @feedbacks = @application.feedbacks

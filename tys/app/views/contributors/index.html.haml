@@ -1,0 +1,9 @@
+%h1= "#{@application.application_name} team members list"
+=link_to 'Send email to everybody', application_composition_all_tm_path(:application_id => @application), method: :post
+
+%ul
+  - @application.users.each do |user|
+    %li
+      = user.name
+      = link_to 'View profile', user_path(user)
+      = link_to "Send him an email", application_composition_mail_tm_path(:application_id => @application.id, :user_id => user.name), method: :post
