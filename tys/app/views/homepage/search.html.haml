@@ -4,11 +4,12 @@
   - @applications.each do |r|
     = r.application_name
     = r.author
-    = link_to "Github", r.github_repository
+    = link_to "Github", "https://github.com/#{r.github_repository}"
     = link_to "Details", user_application_show_public_path(r.author, r)
 
 - unless @users == []
   %h2 Users
   - @users.each do |user|
     = user.name
+    -# TODO: User's applications link
     = link_to "User Applications", "#"

@@ -6,25 +6,23 @@ Rails.application.routes.draw do
 
   # Users routes and applications routes
   resources :users, only: :show do
-    get 'applications/:id/show_public' => 'applications#show_public', as: 'application_show_public'
     resources :applications do
-      post 'add_contribs/:repo' => 'applications#add_github_contribs', as: 'add_github_contribs'
+      post 'add_contribs/:repo' => 'contributors#add_github_contribs', as: 'add_github_contribs'
       resources :stack_traces
       resources :invitations, only: [:create, :destroy] do
-        get "/accept/:token" => "invitations#accept", as: "accept_invitation"
+        get "/accept/:token" => "contributors#create", as: "accept_invitation"
       end
+      get '/show_public' => 'applications#show_public'
     end
   end
 
   resources :application, only: '' do
     resources :feedbacks
+    resources :contributors, only: [:index, :destroy]
   end
 
   get 'users_login' => 'users#login'
   get 'users_authorize' => 'users#authorize'
   get 'users_logout' => 'users#logout'
-
-  get "stacktraces/:id/details" => "stacktraces#show_details"
-  get "applications/:id/team_members" => "applications#team_members", as: "application_team_members"
 
 end
