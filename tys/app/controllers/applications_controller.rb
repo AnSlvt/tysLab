@@ -3,6 +3,7 @@ class ApplicationsController < ApplicationController
   before_action :logged_in?, except: :show_public
   before_action :is_allowed?, except: :show_public
 
+  # GET /users/:user_id/applications/:id
   def show
     @application = Application.find_by(author: params[:user_id],
                                       id: params[:id])
@@ -14,9 +15,10 @@ class ApplicationsController < ApplicationController
     @github_param = @application.github_repository.sub("/", "_") unless @application.github_repository == ""
   end
 
+  # GET /users/:user_id/applications/new
   def new
     @application = Application.new
-    repos = UsersController.get_repos(current_user)
+    repos = SessionHandler.instance.get_repos(current_user)
     @repos = repos.map do |r|
       r[:full_name] if r[:owner][:login] == current_user.name
     end
@@ -24,48 +26,25 @@ class ApplicationsController < ApplicationController
     @repos.unshift nil
   end
 
+  # POST /users/:user_id/applications
   def create
     @application = Application.create!(create_params)
     @application.users << current_user
     flash[:notice] = "#{@application.application_name} was successfully created."
   end
 
+  # GET /users/:user_id/applications
   def index
     @invitations = Invitation.where(target_name: current_user)
   end
 
-  def add_github_contribs
-    application = Application.find(params[:application_id])
-
-    # Control if the user is allowed
-    render file: 'public/404.html' and return unless session[:user_id] == params[:user_id]
-
-    # Get the github contribs and all the existings users and compute the intersection
-    contribs = UsersController.get_github_contributors(params[:repo])
-    auth_users = User.all
-    auth_users = auth_users.map { |u| u.name }
-    contribs = contribs.map! { |c| c[:login]}
-    existing_contribs = contribs & auth_users
-
-    # For all the existings users that are github contribs create a row in Contributor
-    existing_contribs.each do |c|
-      Contributor.create!({
-        user_id: c,
-        application_id: params[:application_id]
-      }) unless c == application.author
-    end
-    redirect_to application_team_members_path(params[:application_id])
-  end
-
-  def team_members
-    @application = Application.find(params[:id])
-  end
-
+  # GET /users/:user_id/applications/:application_id/show_public
   def show_public
-    @application = Application.find(params[:id])
+    @application = Application.find(params[:application_id])
     @feedbacks = @application.feedbacks
   end
 
+  # DELETE /users/:user_id/applications/:id
   def destroy
     @application = Application.find_by(author: params[:user_id], id: params[:id])
     render file: "public/404.html" and return unless @application
