@@ -1,0 +1,15 @@
+%h1 Edit feedback
+
+=form_tag application_feedback_path(@feedback.application_id, @feedback.id), method: :patch do
+    = label_tag :text, "Text"
+    %br
+    =text_area_tag :text, @feedback.text
+
+    %br
+    %br
+
+    = label_tag :feedback_type, "Feedback type"
+    %br
+    = select_tag	:feedback_type, options_for_select(["Bug Report", "Feedback"], @feedback.feedback_type), required: true
+    %br
+    = submit_tag "Submit"

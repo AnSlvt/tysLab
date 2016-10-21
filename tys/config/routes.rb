@@ -17,8 +17,13 @@ Rails.application.routes.draw do
   end
 
   resources :application, only: '' do
-    resources :feedbacks
     resources :contributors, only: [:index, :destroy]
+    resources :feedbacks, except: [:new, :show, :index]
+    get "feedbacks/:parent_id/" => "feedbacks#new", as: "new_feedback"
+    post "contributors/" => "contributors#composition_mail", as: "composition_mail_tm"
+    post "contributors/all" => "contributors#composition_all", as: "composition_all_tm"
+    post "send_mail" => "contributors#send_mail", as: "send_mail_tm"
+    post "send_all" => "contributors#send_all", as: "send_all_tm"
   end
 
   get 'users_login' => 'users#login'

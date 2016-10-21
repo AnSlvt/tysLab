@@ -6,14 +6,13 @@ class InvitationsController < ApplicationController
   # POST /users/:user_id/applications/:application_id/invitations
   def create
 
-    render file: 'public/404.html', status: 403 and return unless session[:user_id] == params[:user_id]
-
     # Create a new entry for the invitations table only if it's a new request
     @invite = Invitation.find_by(leader_name: current_user.name,
                                 target_name: params[:user_id],
                                 application_id: params[:application_id])
     @application = Application.find(params[:application_id])
     @target = User.find(params[:user_id])
+    render file: 'public/404.html', status: 403 and return unless session[:user_id] == @application.author
     render file: 'public/404.html', status: 403 and return if @target.in?(@application.users)
 
     # If the invitation already exists send the email with the previous token

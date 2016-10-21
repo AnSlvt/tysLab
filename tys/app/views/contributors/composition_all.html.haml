@@ -1,0 +1,17 @@
+%h1 Write here your email
+
+= form_tag application_send_all_tm_path(@application.id), method: :post do
+
+    =label_tag :subject, "Subject"
+    %br
+    =text_field_tag :subject
+    %br
+    %br
+    =label_tag	:text, "Text"
+    %br
+    =text_area_tag :text
+    %br
+    %br
+    =hidden_field_tag :sender, session[:user_id]
+    %br
+    =submit_tag "Send"

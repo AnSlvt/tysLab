@@ -9,9 +9,8 @@ class ApplicationsController < ApplicationController
     render file: "public/404.html", status: 404 and return unless @application
     #@reports = StackTrace.where(app: @application.id) if @application
     @reports = @application.stack_traces
-
-    # Used to retrieve the github collaborators
-    @github_param = @application.github_repository.sub("/", "_") unless @application.github_repository == ""
+    @feedbacks = Feedback.where(application_id: params[:id])
+    @github_param = @application.github_repository.sub('/', '_')
   end
 
   # GET /users/:user_id/applications/new

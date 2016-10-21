@@ -29,14 +29,6 @@ ActiveRecord::Schema.define(version: 20161015105456) do
     t.datetime "updated_at",                 null: false
   end
 
-  create_table "feedback_responses", force: :cascade do |t|
-    t.integer  "response_id",     limit: 4,   null: false
-    t.integer  "target_id",       limit: 4,   null: false
-    t.string   "response_author", limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
   create_table "feedbacks", force: :cascade do |t|
     t.text     "text",           limit: 65535, null: false
     t.string   "feedback_type",  limit: 255,   null: false
@@ -45,6 +37,7 @@ ActiveRecord::Schema.define(version: 20161015105456) do
     t.string   "user_name",      limit: 255
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "parent_id",      limit: 4
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -53,7 +46,7 @@ ActiveRecord::Schema.define(version: 20161015105456) do
     t.integer  "application_id", limit: 4,   null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.string   "invite_token",   limit: 255
+    t.string   "invite_token",   limit: 255, null: false
   end
 
   create_table "stack_traces", force: :cascade do |t|
