@@ -9,6 +9,6 @@
   = f.select :programming_language, ['C#', 'Java', 'Objective-C']
 
   = f.label :github_repository
-  = f.text_field :github_repository
+  = f.select :github_repository, @repos
 
   = f.submit

@@ -1,9 +1,9 @@
 %h1= "#{@application.application_name} team members list"
-=link_to 'Send email to everybody', application_composition_all_tm_path(:application_id => @application), method: :post
-
 %ul
-  - @application.users.each do |user|
+  - for i in 0..(@application.users.length - 1) do
     %li
-      = user.name
-      = link_to 'View profile', user_path(user)
-      = link_to "Send him an email", application_composition_mail_tm_path(:application_id => @application.id, :user_id => user.name), method: :post
+      = @application.users[i].name
+      = link_to 'View profile', user_path(@application.users[i])
+      - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
+        = button_to 'Remove user from team', application_contributor_path(@application,
+          @application.contributors[i]), method: :delete

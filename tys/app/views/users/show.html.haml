@@ -1,8 +1,13 @@
-%h1= "Details about #{current_user.name}"
+%h1= "Details about #{@user.name}"
 %ul
   %li
     Name:
-    = current_user.name
+    = @user.name
   %li
     Email:
-    = current_user.email
+    = @user.email
+
+- current_user.applications.each do |app|
+  - unless @user.in?(app.users)
+    = button_to "Invite #{@user.name} to #{app.application_name}",
+      user_application_invitations_path(@user, app), method: :post
