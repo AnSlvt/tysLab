@@ -1,28 +1,51 @@
-%h3 Invitations
-%ul
-  - @invitations.each do |inv|
-    %li= "#{inv.leader_name} invited you"
-    = button_to "Delete", user_application_invitation_path(current_user, inv.application_id, inv),
-      method: :delete
-
-%h1 Application list:
-%ul
-  - current_user.applications.each do |application|
-    /TODO order application by role
-    %li
-      = application.application_name
-
-      - if application.author == current_user.name
-        Role:
-        = "team leader"
-        = button_to 'Delete', user_application_path(current_user, application), :method => :delete
-      - else
-        Role:
-        = "contributor"
-      = link_to "Go to the app page",
-        user_application_path(application.author, application), method: :get
-
-= button_to "Add a new application",
-            new_user_application_path(current_user),
-            method: :get
-= button_to "Logout", users_logout_path, method: :get
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar.pull-right
+          .btn-group
+            = button_to "New Application", new_user_application_path(current_user), method: :get, :class => "btn btn-success"
+        %h1.text-info
+          Your Application List
+  .row
+    .col-md-6
+      %h3.text-info Invitations
+      %ul.list-group
+        - @invitations.each do |inv|
+          - unless @invitations == []
+            %li.list-group-item
+              %span
+                = "#{inv.leader_name} invited you"
+              = button_to "Delete", user_application_invitation_path(current_user, inv.application_id, inv),
+                method: :delete, :class => "btn btn-success btn-danger pull-right"
+          - else
+            %li.list-group-item
+              %span No invitations, maybe you're not good enough
+      %h3.text-info Team Leader Apps
+      %ul.list-group
+        - @applications = Application.where(author: current_user.name)
+        - unless @applications == []
+          - @applications.each do |application|
+            %li.list-group-item
+              %span
+                .btn-toolbar.pull-right
+                  .btn-group
+                    = button_to "Delete", user_application_path(current_user, application), :method => :delete, :class => "btn btn-danger btn-xs"
+                = application.application_name
+                = link_to "Details", user_application_path(current_user, application)
+        - else
+          %li.list-group-item
+            %span No Team Leader applications (yet)
+      %h3.text-info Contributor Apps
+      %ul.list-group
+        - counter = 0
+        - current_user.applications.each do |application|
+          - unless application.author == current_user.name
+            %li.list-group-item
+              %span
+                = application.application_name
+                = link_to "Details", user_application_path(application)
+            counter = counter + 1
+        - if counter == 0
+          %li.list-group-item
+            %span No Contributor applications (yet)

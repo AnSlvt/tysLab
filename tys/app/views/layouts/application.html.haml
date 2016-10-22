@@ -4,19 +4,45 @@
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
-%body
-  .nav
-    - if session[:user_id]
-      = form_tag user_search_path, method: :get do
-        = text_field_tag :search_params, params[:search_params]
-        = submit_tag "Search"
-      = link_to  "Trace Your Stack", user_applications_path(current_user), method: :get
-    - else
-      = form_tag search_results_path, method: :get do
-        = text_field_tag :search_params, params[:search_params]
-        = submit_tag "Search"
-      = link_to "Homepage", root_path, method: :get
-  #notifications
-  = yield
-  - if flash[:notice]
-    = flash[:notice]
+    / Latest compiled and minified CSS
+    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :integrity => "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", :rel => "stylesheet"}/
+    / Optional theme
+    %link{:crossorigin => "anonymous", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css", :integrity => "sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp", :rel => "stylesheet"}/
+    / Latest compiled and minified JavaScript
+    %script{:crossorigin => "anonymous", :integrity => "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+  %body
+    - if flash[:notice]
+      = flash[:notice]
+    %header
+      %nav.navbar.navbar-inverse
+        .container-fluid
+          .navbar-header
+            - if session[:user_id]
+              = link_to "Trace Your Stack", user_applications_path(current_user), method: :get, :class => "navbar-brand navbar-link"
+            -else
+              = link_to "Trace Your Stack", root_path, method: :get, :class => "navbar-brand navbar-link"
+            /%a.navbar-brand.navbar-link{:href => "#"} Trace Your Stack
+          .collapse.navbar-collapse
+            - if session[:user_id]
+              %ul.nav.navbar-nav.navbar-right
+                %li
+                  %a{:href => user_path(current_user)}
+                    %strong
+                      = "#{current_user.name}"
+                %li
+                  %a{:href => users_logout_path}
+                    %i.glyphicon.glyphicon-log-out
+                    &nbsp;Logout
+            - else
+              %ul.nav.navbar-nav.navbar-right
+                %li
+                  %a{:href => users_login_path}
+                    %i.glyphicon.glyphicon-log-in
+                    &nbsp;Login with
+                    %strong GitHub
+            = form_tag search_results_path, method: :get, :class => 'navbar-form' do
+              .form-group
+                = text_field_tag :search_params, params[:search_params], :id => "home_search", :class => 'form-control', :placeholder => "search users...", :type => "search"
+              = submit_tag "Search", :for => "home_search", :class => "btn btn-primary"
+    %section
+      = yield

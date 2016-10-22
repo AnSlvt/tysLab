@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     post "send_all" => "contributors#send_all", as: "send_all_tm"
   end
 
+  get "applications/:id/team_members" => "applications#team_members", as: "application_team_members"
   get 'users_login' => 'users#login'
   get 'users_authorize' => 'users#authorize'
   get 'users_logout' => 'users#logout'
