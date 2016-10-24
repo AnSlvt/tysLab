@@ -1,26 +1,36 @@
-%h3 Invitations
-%ul
-  - @invitations.each do |inv|
-    %li= "#{inv.leader_name} invited you"
-    = button_to "Delete", user_application_invitation_path(current_user, inv.application_id, inv),
-      method: :delete
+- unless @pending == []
+  %h3 Pending requets
+  %ul
+    - @pending.each do |inv|
+      %li= "Waiting for #{inv.target_name} response"
+      = button_to "Revoke", user_application_invitation_path(current_user, inv.application_id, inv),
+        method: :delete
 
-%h1 Application list:
-%ul
-  - current_user.applications.each do |application|
-    /TODO order application by role
-    %li
-      = application.application_name
+- unless @invitations == []
+  %h3 Invitations
+  %ul
+    - @invitations.each do |inv|
+      %li= "#{inv.leader_name} invited you"
+      = button_to "Decline", user_application_invitation_path(current_user, inv.application_id, inv),
+        method: :delete
 
-      - if application.author == current_user.name
-        Role:
-        = "team leader"
-        = button_to 'Delete', user_application_path(current_user, application), :method => :delete
-      - else
-        Role:
-        = "contributor"
-      = link_to "Go to the app page",
-        user_application_path(application.author, application), method: :get
+- unless current_user.applications == []
+  %h1 Application list:
+  %ul
+    - current_user.applications.each do |application|
+      /TODO order application by role
+      %li
+        = application.application_name
+
+        - if application.author == current_user.name
+          Role:
+          = "team leader"
+          = button_to 'Delete', user_application_path(current_user, application), :method => :delete
+        - else
+          Role:
+          = "contributor"
+        = link_to "Go to the app page",
+          user_application_path(application.author, application), method: :get
 
 = button_to "Add a new application",
             new_user_application_path(current_user),
