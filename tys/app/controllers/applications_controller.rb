@@ -33,6 +33,7 @@ class ApplicationsController < ApplicationController
 
   # GET /users/:user_id/applications
   def index
+    @pending = Invitation.where(leader_name: current_user)
     @invitations = Invitation.where(target_name: current_user)
   end
 
