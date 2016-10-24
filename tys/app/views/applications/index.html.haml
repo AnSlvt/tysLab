@@ -44,8 +44,8 @@
             %li.list-group-item
               %span
                 = application.application_name
-                = link_to "Details", user_application_path(application)
-            counter = counter + 1
+                = link_to "Details", user_application_path(current_user, application)
+            - counter = counter + 1
         - if counter == 0
           %li.list-group-item
             %span No Contributor applications (yet)
