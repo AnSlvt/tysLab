@@ -23,9 +23,10 @@
     - @reports.each do |stack|
       %tr
         %td= stack.application_version
-        %td= stack.error_type
-        %td= check_box_tag "Fixed", "1", stack.fixed
-        -#%td= button_to "Save fixed status", user_application_stack_trace_path(@application.author, @application, stack), status: method: :put
+        - if stack.fixed
+          %td= button_to "Fixed", user_application_stack_trace_path(@application.author, @application, stack), method: :put
+        - else
+          %td= button_to "Not fixed", user_application_stack_trace_path(@application.author, @application, stack), method: :put
         %td= link_to "Issues", "#"
         %td= link_to "Create issue", "#"
         %td= link_to "Details", "#"
