@@ -22,9 +22,14 @@ class StackTraceDetailsController < ActionController::Base
     @devices = similar.collect { |crash| crash.device }.uniq
 
     # Get the times of the first and last occurrence of this exception
-    time_ordered = similar.sort { |a, b| a.time <=> b.time }
+    time_ordered = similar.sort { |a, b| a.crash_time <=> b.crash_time }
     @most_recent = time_ordered.last
     @first_time = time_ordered.first
+  end
+
+  def update
+    status = params[:fixed]
+
   end
 
   private

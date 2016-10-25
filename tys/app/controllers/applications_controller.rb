@@ -7,8 +7,34 @@ class ApplicationsController < ApplicationController
   def show
     @application = Application.find_by(author: params[:user_id], id: params[:id])
     render file: "public/404.html", status: 404 and return unless @application
-    #@reports = StackTrace.where(app: @application.id) if @application
-    @reports = @application.stack_traces
+    # Stack traces
+    raw_reports = @application.stack_traces
+    if (!params[:sort_mode] || params[:sort_mode] == '1')
+      # grouped by app version number
+      out = []
+      raw_reports.group_by(&:application_version).each do |ver, stacks|
+        out += stacks.sort { |a, b| a.crash_time <=> b.crash_time }
+      end
+      @reports = out.reverse
+    elsif (params[:sort_mode] == '2')
+      # alphabetical order
+      @reports = raw_reports.sort_by { |ex| [ex.error_type, ex.stack_trace_message] }
+    else
+      # frequency order
+      out = []
+      dic = {}
+      iter = []
+      raw_reports.group_by(&:error_type).each do |type, stacks|
+        dic[type] = stacks
+        iter << [type, stacks.length]
+      end
+      iter.sort_by { |row| row[1] }.reverse.each do |tuple|
+        out += dic[tuple[0]]
+      end
+      @reports = out
+    end
+
+    # Additional info
     @feedbacks = Feedback.where(application_id: params[:id])
     @github_param = @application.github_repository.sub('/', '_')
   end
