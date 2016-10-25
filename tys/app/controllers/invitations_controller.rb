@@ -37,10 +37,13 @@ class InvitationsController < ApplicationController
                                 @application.application_name,
                                 link).deliver_now
     flash[:notice] = "#{params[:user_id]} invited to #{@application.application_name}"
+    redirect_to user_applications_path(current_user)
   end
 
+  # DELETE /users/:user_id/applications/:application_id/invitations/:id
   def destroy
     @invitation = Invitation.find(params[:id])
+    render file: 'public/404', status: 403 and return unless @invitation.target_name == current_user.name || current_user.name == @invitation.leader_name
     user = @invitation.target_name
     @invitation.destroy
     redirect_to user_applications_path(user)
@@ -49,7 +52,7 @@ class InvitationsController < ApplicationController
   private
 
   def is_allowed
-    unless params[:user_id] == session[:user_id]
+    unless params[:user_id] == session[:user_id] || session[:user_id]
       render file: "public/404.html", status: 403 and return
     end
   end

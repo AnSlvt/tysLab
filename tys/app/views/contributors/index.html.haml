@@ -15,12 +15,10 @@
             = "#{@application.author}"
       %h3.text-info Contributors
       %ul.list-group
-        - @application.users.each do |user|
-          - if user.name != @application.author
-            %li.list-group-item
-              %span
-                = user.name
-                = link_to 'View profile', user_path(user)
-                /- if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
-                /= button_to 'Remove user from team', application_contributor_path(@application,
-                /@application.contributors[i]), method: :delete
+        - for i in 0..(@application.users.length - 1) do
+          %li.list-group-item
+          - unless @application.author == @application.users[i].name
+            = @application.users[i].name
+            = link_to 'View profile', user_path(@application.users[i])
+            - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
+              = button_to 'Remove user from team', application_contributor_path(@application, @application.contributors[i]), method: :delete

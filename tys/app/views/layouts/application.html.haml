@@ -21,7 +21,6 @@
               = link_to "Trace Your Stack", user_applications_path(current_user), method: :get, :class => "navbar-brand navbar-link"
             -else
               = link_to "Trace Your Stack", root_path, method: :get, :class => "navbar-brand navbar-link"
-            /%a.navbar-brand.navbar-link{:href => "#"} Trace Your Stack
           .collapse.navbar-collapse
             - if session[:user_id]
               %ul.nav.navbar-nav.navbar-right
