@@ -19,7 +19,7 @@ class ApplicationsController < ApplicationController
     elsif (params[:sort_mode] == '2')
       # alphabetical order
       @reports = raw_reports.sort_by { |ex| [ex.error_type, ex.stack_trace_message] }
-    else
+    elsif (params[:sort_mode] == '3')
       # frequency order
       out = []
       dic = {}
@@ -32,6 +32,9 @@ class ApplicationsController < ApplicationController
         out += dic[tuple[0]]
       end
       @reports = out
+    else
+      # fixed status order
+      @reports = raw_reports.sort_by { |ex| [ex.fixed, ex.crash_time] }
     end
 
     # Additional info
