@@ -22,3 +22,30 @@
         %li.list-group-item
           %span
             = @user.email
+
+      - if @user.secondary_email && @user.secondary_email != ''
+        %h3.text-info Secondary email:
+        %ul.list-group
+          %li.list-group-item
+            %span
+              = @user.secondary_email
+
+      %h3.text-info Bio:
+      %ul.list-group
+        %li.list-group-item
+          %span
+            - if @user.bio && @user.bio != ''
+              = @user.bio
+            - else
+              There isn't a bio available yet
+
+      - if @user.phone
+        %h3.text-info Phone number:
+        %ul.list-group
+          %li.list-group-item
+            %span
+              = @user.phone
+
+= button_to "Edit user details",
+            edit_user_path(@user.name),
+            method: :get

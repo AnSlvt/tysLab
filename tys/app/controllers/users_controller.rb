@@ -41,6 +41,20 @@ class UsersController < ApplicationController
     flash[:notice] = "Logged out!"
   end
 
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    user = User.find(params[:id])
+    user.update({ secondary_email: params[:secondary_email], phone: params[:phone], bio: params[:bio] })
+    redirect_to user_path(user)
+  end
+
   private
 
   def get_request_code

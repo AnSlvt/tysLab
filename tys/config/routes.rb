@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get '/user_search' => 'homepage#search_user'
 
   # Users routes and applications routes
-  resources :users, only: :show do
+  resources :users, only: [:show, :edit, :update] do
     resources :applications do
       post 'add_contribs/:repo' => 'contributors#add_github_contribs', as: 'add_github_contribs'
       resources :stack_traces
