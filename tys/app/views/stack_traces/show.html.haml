@@ -10,11 +10,15 @@
         %tr Calls stack:
         %tr= @report.stack_trace_text
     %table
-      %td
-        Devices:
-        %ul
-          - @devices.each do |device|
-            %li= device
+      %thead
+        %tr
+          %th Device
+          %th Crashes
+      - @devices.each do |device|
+        %tr
+          %td= device[0]
+          %td= device[1]
+    %table
       %td
         %tr Most recent:
         %tr= @most_recent.to_s
