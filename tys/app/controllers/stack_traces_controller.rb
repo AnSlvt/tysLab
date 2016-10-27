@@ -20,8 +20,12 @@ class StackTracesController < ApplicationController
     @report = StackTrace.find(params[:id])
 
     # Get the list of devices that generated the same exception in the current app
-    similar = StackTrace.where(app: @report.application, type: @report.error_type) if @report
-    @devices = similar.collect { |crash| crash.device }.uniq
+    similar = StackTrace.where(application_id: @report.application, error_type: @report.error_type) if @report
+    devs = []
+    similar.group_by(&:device).each do |device, stacks|
+      devs << [device, stacks.length]
+    end
+    @devices = devs.sort { |a, b| a[1] <=> b[1] }.reverse
 
     # Get the times of the first and last occurrence of this exception
     time_ordered = similar.sort { |a, b| a.crash_time <=> b.crash_time }
