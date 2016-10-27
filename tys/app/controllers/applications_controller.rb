@@ -34,7 +34,16 @@ class ApplicationsController < ApplicationController
       @reports = out
     else
       # fixed status order
-      @reports = raw_reports.sort_by { |ex| [ex.fixed, ex.crash_time] }
+      fx = []
+      nfx = []
+      raw_reports.group_by(&:fixed).each do |fixed, stacks|
+        if fixed
+          fx = stacks.sort { |a, b| a.crash_time <=> b.crash_time }
+        else
+          nfx = stacks.sort { |a, b| a.crash_time <=> b.crash_time }
+        end
+      end
+      @reports = nfx + fx
     end
 
     # Additional info

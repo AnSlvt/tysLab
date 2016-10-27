@@ -17,12 +17,14 @@
       %tr
         %th Version
         %th Type
+        %th Status
         %th Issues
         %th Create Issue
         %th Details
     - @reports.each do |stack|
       %tr
         %td= stack.application_version
+        %td= stack.error_type
         - if stack.fixed
           %td= button_to "Fixed", user_application_stack_trace_path(@application.author, @application, stack), method: :put
         - else
