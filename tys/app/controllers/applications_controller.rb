@@ -36,6 +36,7 @@ class ApplicationsController < ApplicationController
     render file: 'public/403.html', status: 403 unless current_user.name == params[:user_id]
     @pending = Invitation.where(leader_name: current_user)
     @invitations = Invitation.where(target_name: current_user)
+    @applications = Application.where(author: current_user)
   end
 
   # GET /users/:user_id/applications/:application_id/show_public

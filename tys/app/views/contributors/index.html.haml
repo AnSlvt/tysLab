@@ -1,9 +1,24 @@
-%h1= "#{@application.application_name} team members list"
-%ul
-  - for i in 0..(@application.users.length - 1) do
-    %li
-      = @application.users[i].name
-      = link_to 'View profile', user_path(@application.users[i])
-      - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
-        = button_to 'Remove user from team', application_contributor_path(@application,
-          @application.contributors[i]), method: :delete
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar.pull-right
+          .btn-group
+        %h1.text-info
+          = "#{@application.application_name} team members list"
+  .row
+    .col-md-6.col-md-offset-0
+      %h3.text-info Team Leader
+      %ul.list-group
+        %li.list-group-item
+          %span
+            = "#{@application.author}"
+      %h3.text-info Contributors
+      %ul.list-group
+        - for i in 0..(@application.users.length - 1) do
+          %li.list-group-item
+          - unless @application.author == @application.users[i].name
+            = @application.users[i].name
+            = link_to 'View profile', user_path(@application.users[i])
+            - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
+              = button_to 'Remove user from team', application_contributor_path(@application, @application.contributors[i]), method: :delete

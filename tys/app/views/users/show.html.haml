@@ -1,13 +1,24 @@
-%h1= "Details about #{@user.name}"
-%ul
-  %li
-    Name:
-    = @user.name
-  %li
-    Email:
-    = @user.email
-
-- current_user.applications.each do |app|
-  - unless @user.in?(app.users)
-    = button_to "Invite #{@user.name} to #{app.application_name}",
-      user_application_invitations_path(@user, app), method: :post
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar.pull-right
+          .btn-group
+            - current_user.applications.each do |app|
+              - unless @user.in?(app.users)
+                = button_to "Invite #{@user.name} to #{app.application_name}",
+                  user_application_invitations_path(@user, app), method: :post, :class => "btn btn-success"
+        %h1.text-info
+          = "Details about #{@user.name}"
+  .row
+    .col-md-6
+      %h3.text-info Name
+      %ul.list-group
+        %li.list-group-item
+          %span
+            = @user.name
+      %h3.text-info Email
+      %ul.list-group
+        %li.list-group-item
+          %span
+            = @user.email

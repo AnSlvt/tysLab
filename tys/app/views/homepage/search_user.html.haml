@@ -1,3 +1,7 @@
-- @users.each do |user|
-  = user.name
-  = link_to 'Details', user_path(user)
+%h3.text-info Users
+%ul.list-group
+  - @users.each do |user|
+    %list-group-item
+      %span
+        = user.name
+        = link_to 'Details', user_path(user)

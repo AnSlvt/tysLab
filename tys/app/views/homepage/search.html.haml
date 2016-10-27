@@ -1,15 +1,37 @@
-- unless @applications == []
-  %h2 Applications
-  %br
-  - @applications.each do |r|
-    = r.application_name
-    = r.author
-    = link_to "Github", "https://github.com/#{r.github_repository}"
-    = link_to "Details", user_application_show_public_path(r.author, r)
-
-- unless @users == []
-  %h2 Users
-  - @users.each do |user|
-    = user.name
-    -# TODO: User's applications link
-    = link_to "User Applications", "#"
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar.pull-right
+          .btn-group
+        %h1.text-info Search Results
+  .row
+    .col-md-6.col-md-offset-0
+      %h3.text-info Applications
+      - unless @applications == []
+        %ul.list-group
+          - @applications.each do |r|
+            %li.list-group-item
+              %span
+                = r.application_name
+                = r.author
+                = link_to "Github", "https://github.com/#{r.github_repository}"
+                = link_to "Details", user_application_show_public_path(r.author, r)
+      - else
+        %ul.list-group
+          %li.list-group-item
+            %span
+              No application found.
+      - unless @users == []
+        %h3.text-info Users
+        %ul.list-group
+          - @users.each do |user|
+            %li.list-group-item
+              %span
+                = user.name
+                = link_to 'Details', user_path(user), method: :get
+      - else
+        %ul.list-group
+          %list-group-item
+            %span
+              No user found.

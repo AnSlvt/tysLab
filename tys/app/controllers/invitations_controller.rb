@@ -37,6 +37,7 @@ class InvitationsController < ApplicationController
                                 @application.application_name,
                                 link).deliver_now
     flash[:notice] = "#{params[:user_id]} invited to #{@application.application_name}"
+    redirect_to user_applications_path(current_user)
   end
 
   # DELETE /users/:user_id/applications/:application_id/invitations/:id

@@ -30,9 +30,10 @@
 = link_to 'See the team members list', application_contributors_path(@application)
 - unless @application.github_repository == ""
   = link_to 'See the GitHub repo', "https://github.com/#{@application.github_repository}"
-  = link_to('Add github collaborators to the team', user_application_add_github_contribs_path(@application.author,
-    @application,
-    @github_param), method: :post)
+  - if session[:user_id] == @application.author
+    = link_to('Add github collaborators to the team', user_application_add_github_contribs_path(@application.author,
+      @application,
+      @github_param), method: :post)
 
 - unless @feedbacks == []
   %h2 Feedbacks List:

@@ -1,38 +1,56 @@
-- unless @pending == []
-  %h3 Pending requets
-  %ul
-    - @pending.each do |inv|
-      %li= "Waiting for #{inv.target_name} response"
-      = button_to "Revoke", user_application_invitation_path(current_user, inv.application_id, inv),
-        method: :delete
-
-- unless @invitations == []
-  %h3 Invitations
-  %ul
-    - @invitations.each do |inv|
-      %li= "#{inv.leader_name} invited you"
-      = button_to "Decline", user_application_invitation_path(current_user, inv.application_id, inv),
-        method: :delete
-
-- unless current_user.applications == []
-  %h1 Application list:
-  %ul
-    - current_user.applications.each do |application|
-      /TODO order application by role
-      %li
-        = application.application_name
-
-        - if application.author == current_user.name
-          Role:
-          = "team leader"
-          = button_to 'Delete', user_application_path(current_user, application), :method => :delete
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar.pull-right
+          .btn-group
+            = button_to "New Application", new_user_application_path(current_user), method: :get, :class => "btn btn-success"
+        %h1.text-info
+          Your Application List
+  .row
+    .col-md-6
+      %h3.text-info Team Leader Apps
+      %ul.list-group
+        - unless @applications == []
+          - @applications.each do |application|
+            %li.list-group-item
+              %span
+                .btn-toolbar.pull-right
+                  .btn-group
+                    = button_to user_application_path(current_user, application), :method => :delete, :class => "btn btn-danger btn-sm" do
+                      %i.glyphicon.glyphicon-trash
+                = application.application_name
+                = link_to "Details", user_application_path(current_user, application)
         - else
-          Role:
-          = "contributor"
-        = link_to "Go to the app page",
-          user_application_path(application.author, application), method: :get
-
-= button_to "Add a new application",
-            new_user_application_path(current_user),
-            method: :get
-= button_to "Logout", users_logout_path, method: :get
+          %li.list-group-item
+            %span No Team Leader applications (yet)
+      %h3.text-info Contributor Apps
+      %ul.list-group
+        - counter = 0
+        - current_user.applications.each do |application|
+          - unless application.author == current_user.name
+            %li.list-group-item
+              %span
+                = application.application_name
+                = link_to "Details", user_application_path(application.author, application)
+            - counter = counter + 1
+        - if counter == 0
+          %li.list-group-item
+            %span No Contributor applications (yet)
+    .col-md-6
+      - unless @pending == []
+        %h3 Pending requets
+        %ul
+          - @pending.each do |inv|
+            %li= "Waiting for #{inv.target_name} response"
+            = button_to "Revoke", user_application_invitation_path(current_user, inv.application_id, inv),
+              method: :delete
+      - unless @invitations == []
+        %h3.text-info Invitations
+        %ul.list-group
+          - @invitations.each do |inv|
+            %li.list-group-item
+              %span
+                = "#{inv.leader_name} invited you"
+              = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-success btn-danger pull-right" do
+                %i.glyphicon.glyphicon-trash
