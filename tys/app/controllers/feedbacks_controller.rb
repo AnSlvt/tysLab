@@ -2,12 +2,13 @@ class FeedbacksController < ApplicationController
 
   before_action :logged_in?, only: [:destroy, :new, :update, :edit]
 
-
+  # GET /application/:application_id/feedbacks/:parent_id
   def new
     @application = Application.find(params[:application_id])
     @user = User.find(session[:user_id])
   end
 
+  # POST /application/:application_id/feedbacks
   def create
     # TODO: Validetes missing in model feedback.rb -> email control
     @feedback = Feedback.create!(feedback_params)
@@ -27,22 +28,26 @@ class FeedbacksController < ApplicationController
 
   # Allow to delete feedback from db.
   def destroy
-    @feedback = Feedback.destroy(params[:id])
+    @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @feedback
+    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name
+    @feedback.destroy
     redirect_to user_application_path(session[:user_id], params[:application_id])
-  end
-
-  def show
   end
 
   #work with the view
   def edit
-    @feedback = Feedback.find(params[:id])
+    @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @feedback
+    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name
     @user = User.find(session[:user_id])
   end
 
   #interact with the model
   def update
-    @feedback = Feedback.find(params[:id])
+    @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @feedback
+    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name
     app_id = @feedback.application_id
     user_id = Application.find(app_id).author
     if  @feedback.update_attributes(update_params)

@@ -43,9 +43,8 @@ class InvitationsController < ApplicationController
   def destroy
     @invitation = Invitation.find(params[:id])
     render file: 'public/404', status: 403 and return unless @invitation.target_name == current_user.name || current_user.name == @invitation.leader_name
-    user = @invitation.target_name
     @invitation.destroy
-    redirect_to user_applications_path(user)
+    redirect_to user_applications_path(current_user)
   end
 
   private

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def logged_in?
     unless session[:user_id]
-      render file: "public/404.html" and return
+      render file: "public/401.html", status: 401 and return
     end
   end
 end

@@ -1,12 +1,12 @@
 class ApplicationsController < ApplicationController
 
   before_action :logged_in?, except: :show_public
-  before_action :is_allowed?, except: :show_public
 
   # GET /users/:user_id/applications/:id
   def show
     @application = Application.find_by(author: params[:user_id], id: params[:id])
     render file: "public/404.html", status: 404 and return unless @application
+    render file: 'public/403.html', status: 403 and return unless current_user.in?(@application.users)
     #@reports = StackTrace.where(app: @application.id) if @application
     @reports = @application.stack_traces
     @feedbacks = Feedback.where(application_id: params[:id])
@@ -33,6 +33,7 @@ class ApplicationsController < ApplicationController
 
   # GET /users/:user_id/applications
   def index
+    render file: 'public/403.html', status: 403 unless current_user.name == params[:user_id]
     @pending = Invitation.where(leader_name: current_user)
     @invitations = Invitation.where(target_name: current_user)
   end
@@ -47,8 +48,8 @@ class ApplicationsController < ApplicationController
   # DELETE /users/:user_id/applications/:id
   def destroy
     @application = Application.find_by(id: params[:id])
-    render file: "public/404.html" and return unless @application
-    render file: "public/403.html" and return unless @application.author == session[:user_id]
+    render file: "public/404.html", status: 404 and return unless @application
+    render file: "public/403.html", status: 403 and return unless @application.author == session[:user_id]
     @application.destroy
     flash[:notice] = "#{@application.application_name} was successfully deleted."
     redirect_to user_applications_path
@@ -58,11 +59,5 @@ class ApplicationsController < ApplicationController
   def create_params
     params.require(:application).permit(:application_name, :author,
                   :programming_language, :github_repository)
-  end
-
-  def is_allowed?
-    unless params[:user_id] == session[:user_id] || Contributor.find_by(user_id: session[:user_id])
-      render file: "public/404.html" and return
-    end
   end
 end
