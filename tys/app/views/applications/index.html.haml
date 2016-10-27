@@ -17,10 +17,12 @@
               %span
                 .btn-toolbar.pull-right
                   .btn-group
-                    = button_to user_application_path(current_user, application), :method => :delete, :class => "btn btn-danger btn-sm" do
+                    = link_to user_application_path(current_user, application), :class => "btn btn-info btn-sm" do
+                      %i.glyphicon.glyphicon-eye-open
+                    = link_to user_application_path(current_user, application), :method => :delete, :class => "btn btn-danger btn-sm" do
                       %i.glyphicon.glyphicon-trash
                 = application.application_name
-                = link_to "Details", user_application_path(current_user, application)
+
         - else
           %li.list-group-item
             %span No Team Leader applications (yet)
@@ -31,26 +33,33 @@
           - unless application.author == current_user.name
             %li.list-group-item
               %span
+                .btn-toolbar.pull-right
+                  .btn-group
+                    = link_to user_application_path(current_user, application), :class => "btn btn-info btn-sm" do
+                      %i.glyphicon.glyphicon-eye-open
                 = application.application_name
-                = link_to "Details", user_application_path(application.author, application)
             - counter = counter + 1
         - if counter == 0
           %li.list-group-item
             %span No Contributor applications (yet)
     .col-md-6
       - unless @pending == []
-        %h3 Pending requets
-        %ul
+        %h3.text-danger Pending requets
+        %ul.list-group
           - @pending.each do |inv|
-            %li= "Waiting for #{inv.target_name} response"
-            = button_to "Revoke", user_application_invitation_path(current_user, inv.application_id, inv),
-              method: :delete
+            %li.list-group-item
+              %span
+                .btn-toolbar.pull-right
+                  = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-success btn-danger btn-sm" do
+                    %i.glyphicon.glyphicon-trash
+                = "#{inv.target_name} for APP_NAME"
+
       - unless @invitations == []
-        %h3.text-info Invitations
+        %h3.text-danger Invitations
         %ul.list-group
           - @invitations.each do |inv|
             %li.list-group-item
               %span
-                = "#{inv.leader_name} invited you"
-              = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-success btn-danger pull-right" do
+                = "#{inv.leader_name} for APP_NAME"
+              = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-success btn-danger btn-sm" do
                 %i.glyphicon.glyphicon-trash

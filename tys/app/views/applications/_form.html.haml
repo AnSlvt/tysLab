@@ -1,14 +1,15 @@
 = form_for [current_user, @application] do |f|
-  = f.label :application_name
-  = f.text_field :application_name
-
-  = f.label :author
-  = f.text_field :author, readonly: true, value: current_user.name
-
-  = f.label :programming_language
-  = f.select :programming_language, ['C#', 'Java', 'Objective-C']
-
-  = f.label :github_repository
+  .input-group
+    = f.label :application_name
+    = f.text_field :application_name
+  .input-group
+    = f.label :author
+    = f.text_field :author, readonly: true, value: current_user.name
+  .input-group
+    = f.label :programming_language
+    = f.select :programming_language, ['C#', 'Java', 'Objective-C']
+  .input-group
+  = f.label :github_repo
   = f.select :github_repository, @repos
-
+  .input-group
   = f.submit

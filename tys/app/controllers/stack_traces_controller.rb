@@ -14,6 +14,23 @@ class StackTracesController < ApplicationController
     StackTrace.create!(create_params)
   end
 
+  def create_issue
+    @application = Application.find_by(author: params[:user_id],
+                                      auth_token: params[:auth_token])
+    render file: "public/404.html" and return if !@application
+    render file: "public/404.html" and return if @application.github_repository == ""
+    @stack_trace = StackTrace.find(params[:id])
+    SessionHandler.instance.create_repo_issues(@application, @stack_trace)
+  end
+
+  def issues
+    @application = Application.find_by(author: params[:user_id],
+                                      auth_token: params[:auth_token])
+    @stack_trace = StackTrace.find(params[:id])
+    @all_issues = get_repo_issues(@application)
+    @issues = @all_issues.where("title = ?", @stack_trace.stack_trace_message)
+  end
+
   def show
 
     # Get the current stack trace
