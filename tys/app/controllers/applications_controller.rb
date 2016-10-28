@@ -10,6 +10,7 @@ class ApplicationsController < ApplicationController
 
     # Stack traces
     raw_reports = @application.stack_traces
+    logger.info "PARAMS #{params} SORT MODE #{params[:sort_mode]}"
     @reports = StackTrace.st_order_by(raw_reports, params[:sort_mode])
 
     # Additional info

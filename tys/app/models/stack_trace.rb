@@ -11,7 +11,7 @@ class StackTrace < ActiveRecord::Base
       out.reverse
     elsif (sort_mode == '2')
       # alphabetical order
-      unordered.sort_by { |ex| [ex.error_type, ex.stack_trace_message] }
+      unordered.sort_by { |ex| [ex.stack_trace_message, ex.error_type] }
     else
       # frequency order
       out = []

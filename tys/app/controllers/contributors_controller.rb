@@ -27,13 +27,15 @@ class ContributorsController < ApplicationController
   def add_github_contribs
 
     # Control if the user is allowed
-    render file: 'public/404.html', status: 404 and return unless session[:user_id] == params[:user_id]
+    render file: 'public/403.html', status: 403 and return unless session[:user_id] == params[:user_id]
 
     application = Application.find(params[:application_id])
 
     # Get the github contribs and all the existings users and compute the intersection
     contribs = SessionHandler.instance.get_github_contributors(params[:repo]).map { |c| c[:login]}
+    logger.info "Contributors -- #{contribs}"
     auth_users = User.all.map { |u| u.name }
+    logger.info "Auth Users"
     existing_contribs = contribs & auth_users
     existing_team_members_names = application.users.map { |u| u.name}
 

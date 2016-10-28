@@ -103,6 +103,10 @@ RSpec.describe FeedbacksController, type: :controller do
         expect(assigns(@feedback)[:feedback][:feedback_type]).to eq 'Feedback'
       end
     end
+
+    context 'unsuccessfull operations' do
+      
+    end
   end
 
   context "unsuccessfull operations" do

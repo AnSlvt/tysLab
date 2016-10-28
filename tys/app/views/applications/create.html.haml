@@ -1,6 +1,7 @@
-%h1= @application.application_name
-%br
-%h2= "Author: #{@application.author}"
-
-= button_to "Back to #{@application.author} main page",
-  user_applications_path(current_user), method: :get
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar
+          .btn-group
+            = button_to "Back to #{@application.author} main page", user_applications_path(current_user), method: :get, :class => "btn btn-success"

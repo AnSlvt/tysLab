@@ -15,10 +15,19 @@
             = "#{@application.author}"
       %h3.text-info Contributors
       %ul.list-group
-        - for i in 0..(@application.users.length - 1) do
+        - unless @application.users.length == 0
+          - for i in 0..(@application.users.length - 1) do
+            %li.list-group-item
+              - unless @application.author == @application.users[i].name
+                %span
+                  .btn-toolbar.pull-right
+                    .btn-group
+                      = link_to user_path(@application.users[i]), :class => "btn btn-info btn-sm" do
+                        %i.glyphicon.glyphicon-eye-open
+                      - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
+                        = link_to  application_contributor_path(@application, @application.contributors[i]), method: :delete, :class => "btn btn-danger btn-sm" do
+                          %i.glyphicon.glyphicon-trash
+                  = @application.users[i].name
+        - else
           %li.list-group-item
-          - unless @application.author == @application.users[i].name
-            = @application.users[i].name
-            = link_to 'View profile', user_path(@application.users[i])
-            - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
-              = button_to 'Remove user from team', application_contributor_path(@application, @application.contributors[i]), method: :delete
+            No contributors found
