@@ -20,7 +20,7 @@ class InvitationsController < ApplicationController
     if @invite
       token = @invite.invite_token
     else
-      token = SecureRandom.hex(64)
+      token = SecureRandom.urlsafe_base64(nil, true)
       @invite = Invitation.create!({
             leader_name: current_user.name,
             target_name: params[:user_id],

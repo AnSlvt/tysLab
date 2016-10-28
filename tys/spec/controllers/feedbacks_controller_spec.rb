@@ -23,7 +23,7 @@ RSpec.describe FeedbacksController, type: :controller do
 
     context 'GET #new' do
       it 'render the new template' do
-        get :new, { application_id: public_feedback.application_id, parent_id: public_feedback.id }, { user_id: app.author }
+        get :new, { application_id: public_feedback.application_id, parent_id: public_feedback.id }, { user_id: user.name }
         expect(assigns(@application)[:application]).to be_kind_of(Application)
         expect(assigns(@user)[:user]).to be_kind_of(User)
         expect(response).to render_template 'new'
@@ -64,7 +64,7 @@ RSpec.describe FeedbacksController, type: :controller do
           user_name: app.author,
           parent_id: nil)
         expect {
-          delete :destroy, { application_id: app.id, id: feedback.id }, { user_id: feedback.user_name }
+          delete :destroy, { application_id: app.id, id: feedback.id }, { user_id: user.name }
         }.to change(Feedback, :count).by(-1)
         expect(response).to redirect_to user_application_path(feedback.user_name, app.id)
       end

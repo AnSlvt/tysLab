@@ -7,8 +7,12 @@ class ApplicationsController < ApplicationController
     @application = Application.find_by(author: params[:user_id], id: params[:id])
     render file: "public/404.html", status: 404 and return unless @application
     render file: 'public/403.html', status: 403 and return unless current_user.in?(@application.users)
-    #@reports = StackTrace.where(app: @application.id) if @application
-    @reports = @application.stack_traces
+
+    # Stack traces
+    raw_reports = @application.stack_traces
+    @reports = StackTrace.st_order_by(raw_reports, params[:sort_mode])
+
+    # Additional info
     @feedbacks = Feedback.where(application_id: params[:id])
     @github_param = @application.github_repository.sub('/', '_')
   end

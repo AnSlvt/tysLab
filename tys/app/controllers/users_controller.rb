@@ -60,7 +60,7 @@ class UsersController < ApplicationController
   def get_request_code
     uri = URI("https://github.com/login/oauth/authorize")
     logger.info "redirect_to #{uri}"
-    @@state = SecureRandom.hex(64)
+    @@state = SecureRandom.urlsafe_base64(nil, true)
     params = { client_id: ENV['client_id'],
                scope: "user,repo",
                state: @@state.to_s }

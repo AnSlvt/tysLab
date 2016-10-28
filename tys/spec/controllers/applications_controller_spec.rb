@@ -21,8 +21,9 @@ RSpec.describe ApplicationsController, type: :controller do
       end
     end
     let(:oct) { Octokit::Client.new(access_token: ENV['oct_test_token']) }
+    let(:contr_user) { User.create!(name: 'LeonardoPetrucci', email: 'a@c.it') }
     let (:contr) {
-      Contributor.create!(user_id: 'LeonardoPetrucci',
+      Contributor.create!(user_id: contr_user.name,
         application_id: app.id)
     }
 
@@ -39,7 +40,7 @@ RSpec.describe ApplicationsController, type: :controller do
 
     context 'GET #index' do
       it 'show the applications list for the current user' do
-        get :index, { user_id: 'AnSlvt' }, { user_id: 'AnSlvt' }
+        get :index, { user_id: 'AnSlvt' }, { user_id: user.name }
         expect(response).to render_template 'index'
         expect(response.status).to eq 200
       end
@@ -113,6 +114,10 @@ RSpec.describe ApplicationsController, type: :controller do
         github_repository: 'repo')
     }
 
+    let(:not_allowed_user) do
+      User.create!({ name: 'LeonardoPetrucci', email: 'a@b.it' })
+    end
+
     context 'GET #index' do
       it 'render 401 because the user is not logged in' do
         get :index, { user_id: 'AnSlvt' }
@@ -121,7 +126,7 @@ RSpec.describe ApplicationsController, type: :controller do
       end
 
       it 'render 403 because the user is not allowed to view the index of other users' do
-        get :index, { user_id: 'AnSlvt' }, { user_id: 'LeonardoPetrucci' }
+        get :index, { user_id: 'AnSlvt' }, { user_id: not_allowed_user.name }
         expect(response).to render_template(file: "#{Rails.root}/public/403.html")
         expect(response.status).to eq 403
       end
@@ -135,7 +140,7 @@ RSpec.describe ApplicationsController, type: :controller do
       end
 
       it 'render 403 because the current user is not allowed' do
-        get :show, { user_id: 'AnSlvt', id: app.id }, { user_id: 'LeonardoPetrucci' }
+        get :show, { user_id: 'AnSlvt', id: app.id }, { user_id: not_allowed_user.name }
         expect(response).to render_template(file: "#{Rails.root}/public/403.html")
         expect(response.status).to eq 403
       end
