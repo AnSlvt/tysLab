@@ -4,9 +4,13 @@
       .page-header
         .btn-toolbar.pull-right
           .btn-group
+            - if current_user.name == @user.name
+              = link_to "Edit user details",
+                          edit_user_path(@user.name),
+                          method: :get, :class => "btn btn-info"
             - current_user.applications.each do |app|
               - unless @user.in?(app.users)
-                = button_to "Invite #{@user.name} to #{app.application_name}",
+                = link_to "Invite #{@user.name} to #{app.application_name}",
                   user_application_invitations_path(@user, app), method: :post, :class => "btn btn-success"
         %h1.text-info
           = "Details about #{@user.name}"
@@ -45,7 +49,3 @@
           %li.list-group-item
             %span
               = @user.phone
-
-= button_to "Edit user details",
-            edit_user_path(@user.name),
-            method: :get
