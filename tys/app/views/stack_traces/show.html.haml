@@ -8,7 +8,9 @@
         %tr Exception type:
         %tr= @report.error_type
         %tr Calls stack:
-        %tr= @report.stack_trace_text
+        %tr
+          %pre{ class: 'brush: csharp' }
+            =@report.stack_trace_text
     %table
       %thead
         %tr
@@ -20,6 +22,9 @@
           %td= device[1]
     %table
       %td
-        %tr Most recent:
-        %tr= @most_recent.to_s
-        %tr= @first_time.to_s
+        - if (@most_recent)
+          %tr Most recent:
+          %tr= @most_recent.crash_time.to_s
+        - if (@first_time)
+          %tr First time:
+          %tr= @first_time.crash_time.to_s
