@@ -1,6 +1,5 @@
 class FeedbackMailer < ApplicationMailer
   default from: 'traceyourstack@gmail.com'
-  layout "feedback_mailer"
 
   def response_email(parent_feedback, response_feedback)
     @parent_feedback = parent_feedback

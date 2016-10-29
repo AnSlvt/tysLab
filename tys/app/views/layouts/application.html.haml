@@ -18,5 +18,5 @@
       = link_to "Homepage", root_path, method: :get
   #notifications
   = yield
-  - if flash[:notice]
-    = flash[:notice]
+  - if session[:notice]
+    = session[:notice]

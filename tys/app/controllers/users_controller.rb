@@ -2,7 +2,7 @@ require 'net/http'
 require_relative '../../lib/session_handler.rb'
 
 class UsersController < ApplicationController
-
+  after_action :notification, only: :authorize
   @@state = ""
 
   def login

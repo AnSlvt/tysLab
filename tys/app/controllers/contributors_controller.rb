@@ -17,10 +17,12 @@ class ContributorsController < ApplicationController
     render file: "public/404.html" and return unless token.to_s == invitation.invite_token
     leader = User.find_by(name: invitation.leader_name)
     invitation.destroy
-    Contributor.create!({
+    contr_id = Contributor.create!({
       user_id: params[:user_id],
       application_id: params[:application_id]
     })
+    ActiveSupport::Notifications.instrument("accepted", contr_id: contr_id, application_id: params[:application_id]) do
+    end
     redirect_to user_application_path(leader, params[:application_id]), method: :get
   end
 
