@@ -25,6 +25,7 @@
               = link_to "App version", user_application_path(@application.author, @application, sort_mode: 1), method: :get, :class => "btn btn-info btn-sm"
               = link_to "Alhabetical order", user_application_path(@application.author, @application, sort_mode: 2), method: :get, :class => "btn btn-info btn-sm"
               = link_to "Frequency", user_application_path(@application.author, @application, sort_mode: 3), method: :get, :class => "btn btn-info btn-sm"
+              = link_to "Fixed Status", user_application_path(@application.author, @application, sort_mode: 4), method: :get, :class => "btn btn-info btn-sm"
           %h3.text-info
             = "Stack Trace list"
         .table
@@ -44,12 +45,10 @@
                 - @reports.each do |stack|
                   %tr
                     %td
-                      .btn-toolbar
-                        .btn-group
-                          = link_to user_application_stack_trace_path(@application.author, @application, stack), :class => "btn btn-xs btn-info" do
-                            %i.glyphicon.glyphicon-eye-open
-                          end
-                      = stack.stack_trace_message
+                      %span
+                        .btn-toolbar
+                          .btn-group
+                            = link_to "#{stack.stack_trace_message}", user_application_stack_trace_path(@application.author, @application, stack)
                     %td
                       = stack.application_version
                     - if stack.fixed
@@ -59,8 +58,9 @@
                     %td
                       .btn-toolbar
                         .btn-group
-                          = link_to "Issues", "#", :class => "btn btn-xs btn-info"
-                          = link_to "+", '#', :class => "btn btn-xs btn-success"
+                          = link_to "Issues", user_application_stack_trace_issues_path(@application.author, @application, stack), :class => "btn btn-xs btn-info"
+                          = link_to '#', :class => "btn btn-xs btn-success" do
+                            %strong +
       - else
         %h3.text-info
           .page-header
@@ -69,14 +69,13 @@
           (Nothing to show)
     .row
       .col-md-12.col-md-offset-0
-        - unless @feedbacks == []
-          %h2 Feedbacks List:
-          - @feedbacks.each do |f|
-            %p= f.user_name
-            %b Text:
-            %p= f.text
-            %p= f.feedback_type
-            =button_to "Answer", application_new_feedback_path(@application, f.id), :method => :get
-            =button_to "Edit", edit_application_feedback_path(@application, f.id), :method => :get if f.user_name == session[:user_id]
-            =button_to "Delete", application_feedback_path(@application, f.id), :method => :delete if f.user_name == session[:user_id]
-            %br
+        %h2 Feedbacks List:
+        - @feedbacks.each do |f|
+          %p= f.user_name
+          %b Text:
+          %p= f.text
+          %p= f.feedback_type
+          =button_to "Answer", application_new_feedback_path(@application, f.id), :method => :get
+          =button_to "Edit", edit_application_feedback_path(@application, f.id), :method => :get if f.user_name == session[:user_id]
+          =button_to "Delete", application_feedback_path(@application, f.id), :method => :delete if f.user_name == session[:user_id]
+          %br

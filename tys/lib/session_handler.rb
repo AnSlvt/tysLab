@@ -18,14 +18,9 @@ class SessionHandler
     @@oct_client.collabs(repo)
   end
 
-  def get_repo_issues(application)
-    @@oct_client.list_issues(application.github_repository)
+  def create_stack_trace_issue(repo, title, body)
+    @@oct_client.create_issue(repo, title, body, {:labels => 'bug'})
   end
-
-  def create_repo_issues(application, stack_trace)
-    @@oct_client.create_issue(application.github_repository, stack_trace.stack_trace_message, stack_trace_text)
-  end
-
 
   private_class_method :new
 end

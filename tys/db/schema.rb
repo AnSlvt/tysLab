@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025115128) do
+ActiveRecord::Schema.define(version: 20161027174414) do
 
   create_table "applications", force: :cascade do |t|
     t.string   "application_name",     limit: 255, null: false
@@ -49,6 +49,16 @@ ActiveRecord::Schema.define(version: 20161025115128) do
     t.string   "invite_token",   limit: 255, null: false
   end
 
+  create_table "issues", force: :cascade do |t|
+    t.string   "stack_trace_id", limit: 255, null: false
+    t.string   "git_repo",       limit: 255, null: false
+    t.string   "title",          limit: 255, null: false
+    t.string   "body",           limit: 255, null: false
+    t.integer  "git_id",         limit: 4,   null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "stack_traces", force: :cascade do |t|
     t.integer  "application_id",      limit: 4,     null: false
     t.text     "stack_trace_text",    limit: 65535, null: false
@@ -59,6 +69,7 @@ ActiveRecord::Schema.define(version: 20161025115128) do
     t.boolean  "fixed"
     t.datetime "crash_time"
     t.string   "error_type",          limit: 255
+    t.string   "device",              limit: 255
   end
 
   create_table "users", id: false, force: :cascade do |t|
