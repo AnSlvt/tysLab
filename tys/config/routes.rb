@@ -9,7 +9,10 @@ Rails.application.routes.draw do
     resources :applications do
       post 'add_contribs/:repo' => 'contributors#add_github_contribs', as: 'add_github_contribs'
       resources :stack_traces do
-        resources :issues
+        resources :issues do
+          get 'edit_label/:label' => 'issues#edit_label', as: 'edit_label'
+          post 'edit_state/:state' => 'issues#edit_state', as: 'edit_state'
+        end
       end
       resources :invitations, only: [:create, :destroy] do
         get "/accept/:token" => "contributors#create", as: "accept_invitation"

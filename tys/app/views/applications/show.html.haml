@@ -59,7 +59,7 @@
                       .btn-toolbar
                         .btn-group
                           = link_to "Issues", user_application_stack_trace_issues_path(@application.author, @application, stack), :class => "btn btn-xs btn-info"
-                          = link_to '#', :class => "btn btn-xs btn-success" do
+                          = link_to new_user_application_stack_trace_issue_path(@application.author, @application, stack), :class => "btn btn-xs btn-success" do
                             %strong +
       - else
         %h3.text-info
@@ -69,7 +69,7 @@
           (Nothing to show)
     .row
       .col-md-12.col-md-offset-0
-        %h2 Feedbacks List:
+        %h2 Feedbacks List
         - @feedbacks.each do |f|
           %p= f.user_name
           %b Text:

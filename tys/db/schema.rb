@@ -49,14 +49,12 @@ ActiveRecord::Schema.define(version: 20161027174414) do
     t.string   "invite_token",   limit: 255, null: false
   end
 
-  create_table "issues", force: :cascade do |t|
-    t.string   "stack_trace_id", limit: 255, null: false
-    t.string   "git_repo",       limit: 255, null: false
-    t.string   "title",          limit: 255, null: false
-    t.string   "body",           limit: 255, null: false
-    t.integer  "git_id",         limit: 4,   null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+  create_table "issues", id: false, force: :cascade do |t|
+    t.integer  "github_number",     limit: 4
+    t.integer  "stack_trace_id",    limit: 4,   null: false
+    t.string   "github_repository", limit: 255, null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "stack_traces", force: :cascade do |t|
