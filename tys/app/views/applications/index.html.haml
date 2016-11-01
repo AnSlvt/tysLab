@@ -61,5 +61,10 @@
             %li.list-group-item
               %span
                 = "#{inv.leader_name} for APP_NAME"
+              = button_to user_application_invitation_accept_invitation(inv.leader_name, inv.application_id, inv, inv.invite_token), method: :get, class: "btn btn-success btn-danger btn-sm"
               = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-success btn-danger btn-sm" do
                 %i.glyphicon.glyphicon-trash
+
+= form_tag subscribe_mail_path, method: :get do
+  = email_field_tag :email, params[:email], placeholder: "Send an invitation mail"
+  = submit_tag "Send"

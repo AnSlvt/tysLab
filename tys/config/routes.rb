@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: 'homepage#index'
   get '/search_results' => 'homepage#search'
   get '/user_search' => 'homepage#search_user'
+  get '/user_mail' => 'users#send_subscribe_mail', as: 'subscribe_mail'
 
   # Users routes and applications routes
   resources :users, only: [:show, :edit, :update] do

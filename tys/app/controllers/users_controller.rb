@@ -3,6 +3,8 @@ require_relative '../../lib/session_handler.rb'
 
 class UsersController < ApplicationController
 
+  before_action :logged_in?, only: :send_subscribe_mail
+
   @@state = ""
 
   def login
@@ -27,8 +29,13 @@ class UsersController < ApplicationController
         render file: 'public/500.html' and return
       end
     end
-
     redirect_to user_applications_path(current_user), method: :get and return
+  end
+
+  def send_subscribe_mail
+    link = root_url.to_s
+    SubscribeMailer.subscribe_mail(current_user.name, params[:email], link).deliver_now
+    redirect_to user_applications_path(session[:user_id]), notice: "Invitation sent!"
   end
 
   def show
