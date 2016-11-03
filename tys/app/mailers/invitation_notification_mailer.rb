@@ -1,5 +1,4 @@
 class InvitationNotificationMailer < ApplicationMailer
-  layout 'invitation_notification_mailer'
   default from: "traceyourstack@gmail.com"
 
   def invitation_mail(source, target, app, link)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027174414) do
+ActiveRecord::Schema.define(version: 20161028221043) do
 
   create_table "applications", force: :cascade do |t|
     t.string   "application_name",     limit: 255, null: false
