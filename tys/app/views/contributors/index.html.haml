@@ -12,13 +12,17 @@
       %ul.list-group
         %li.list-group-item
           %span
+            .btn-toolbar.pull-right
+              .btn-group
+                = link_to user_path(@application.author), :class => "btn btn-info btn-sm" do
+                  %i.glyphicon.glyphicon-eye-open
             = "#{@application.author}"
       %h3.text-info Contributors
       %ul.list-group
-        - unless @application.users.length == 0
+        - unless @application.users.length == 1
           - for i in 0..(@application.users.length - 1) do
-            %li.list-group-item
-              - unless @application.author == @application.users[i].name
+            - unless @application.author == @application.users[i].name
+              %li.list-group-item
                 %span
                   .btn-toolbar.pull-right
                     .btn-group
@@ -28,6 +32,8 @@
                         = link_to  application_contributor_path(@application, @application.contributors[i]), method: :delete, :class => "btn btn-danger btn-sm" do
                           %i.glyphicon.glyphicon-trash
                   = @application.users[i].name
+
         - else
           %li.list-group-item
-            No contributors found
+            %span
+              No contributors found

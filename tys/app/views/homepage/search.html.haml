@@ -13,25 +13,34 @@
           - @applications.each do |r|
             %li.list-group-item
               %span
-                = r.application_name
-                = r.author
-                = link_to "Github", "https://github.com/#{r.github_repository}"
-                = link_to "Details", user_application_show_public_path(r.author, r)
+                .btn-toolbar.pull-right
+                  .btn-group
+                    = link_to "https://github.com/#{r.github_repository}", :class => "btn btn-info btn-sm" do
+                      %i.glyphicon.glyphicon-globe
+                    = link_to user_application_show_public_path(r.author, r), :class => "btn btn-info btn-sm" do
+                      %i.glyphicon.glyphicon-eye-open
+                = "#{r.application_name}, by #{r.author}"
       - else
         %ul.list-group
           %li.list-group-item
             %span
               No application found.
+
+      %h3.text-info Users
       - unless @users == []
-        %h3.text-info Users
         %ul.list-group
           - @users.each do |user|
             %li.list-group-item
               %span
+                .btn-toolbar.pull-right
+                  .btn-group
+                    = link_to 'Details', user_path(user), method: :get, :class => "btn btn-info btn-sm" do
+                      %i.glyphicon.glyphicon-eye-open
                 = user.name
-                = link_to 'Details', user_path(user), method: :get
       - else
         %ul.list-group
-          %list-group-item
+          %li.list-group-item
             %span
+              .btn-toolbar.pull-right
+                .btn-group
               No user found.

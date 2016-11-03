@@ -1,0 +1,52 @@
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        %h1.text-info
+          = "#{@stack_trace.stack_trace_message} issues list"
+          %small
+            = "in #{@stack_trace.application.application_name}"
+  .row
+    .col-md-12.col-md-offset-0
+      - unless @stack_trace.issues == []
+        %table.table
+          %thead
+            %tr
+              %th.info
+                Title
+              %th.info
+                Labels
+              %th.info
+                State
+              %th.info
+          %tbody
+            - @stack_trace.issues.each do |issue|
+              - git_issue = issue.github_issue
+              %tr
+                %td
+                  = link_to "#{git_issue.title}", "https://github.com/#{issue.github_repository}/issues/#{issue.github_number}"
+                %td
+                  .btn-group
+                    - git_issue.labels.each do |label|
+                      = link_to label.name, '#', :class => "btn btn-danger btn-xs"
+                    %a.btn.btn-danger.btn-xs.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                      &nbsp
+                      %span.caret
+                      %span.sr-only Toggle Dropdown
+                    %ul.dropdown-menu
+                      %li
+                        = link_to "bug", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "bug")
+                        = link_to "duplicate", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "duplicate")
+                        = link_to "enhancement", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "enhancement")
+                        = link_to "help wanted", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "help wanted")
+                        = link_to "invalid", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "invalid")
+                        = link_to "question", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "question")
+                        = link_to "wontfix", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "wontfix")
+                %td
+                  - if git_issue.state == "open"
+                    = button_to "open", user_application_stack_trace_issue_edit_state_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "closed"), :class => 'btn btn-xs btn-success'
+                  - else
+                    = button_to "closed", user_application_stack_trace_issue_edit_state_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "open"), :class => 'btn btn-xs btn-danger'
+      - else
+        %h5.text-muted
+          (Nothing to show)

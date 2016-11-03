@@ -1,0 +1,48 @@
+.container-fluid
+  .row
+    .col-md-12.col-md-offset-0
+      .page-header
+        .btn-toolbar.pull-right
+          .btn-group
+            = link_to 'Create a GitHub branch', '#', :class => "btn btn-success"
+        %h1.text-info
+          Stack Trace details
+  .row
+    .col-md-6
+      %h3.text-info Exception type
+      %ul.list-group
+        %li.list-group-item
+          = @report.error_type
+      %h3.text-info Call stack
+      %pre{ class: 'brush: csharp' }
+        =@report.stack_trace_text
+      %h3.text-info Exception date
+      %ul.list-group
+        %li.list-group-item
+          - if (@most_recent)
+            = "Most recent: #{@most_recent.crash_time.to_s}"
+          - else
+            Most recent: Unknown
+        %li.list-group-item
+          - if (@first_time)
+            = "First time: #{@first_time.crash_time.to_s}"
+          - else
+            First time: Unknown
+    .col-md-6
+      %h3.text-info Occurrencies
+      .table
+        .table-responsive
+          %table.table
+            %thead
+              %tr
+                %th
+                  Device
+                %th
+                  Crash times
+            %tbody
+              - @devices.each do |device|
+                %tr
+                  %td
+                    = device[0]
+                  %td
+                    = device[1]

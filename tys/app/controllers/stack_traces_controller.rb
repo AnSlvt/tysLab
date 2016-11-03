@@ -14,31 +14,18 @@ class StackTracesController < ApplicationController
     StackTrace.create!(create_params)
   end
 
-  def create_issue
-    @application = Application.find_by(author: params[:user_id],
-                                      auth_token: params[:auth_token])
-    render file: "public/404.html" and return if !@application
-    render file: "public/404.html" and return if @application.github_repository == ""
-    @stack_trace = StackTrace.find(params[:id])
-    SessionHandler.instance.create_repo_issues(@application, @stack_trace)
-  end
-
-  def issues
-    @application = Application.find_by(author: params[:user_id],
-                                      auth_token: params[:auth_token])
-    @stack_trace = StackTrace.find(params[:id])
-    @all_issues = get_repo_issues(@application)
-    @issues = @all_issues.where("title = ?", @stack_trace.stack_trace_message)
-  end
-
   def show
 
     # Get the current stack trace
     @report = StackTrace.find(params[:id])
 
     # Get the list of devices that generated the same exception in the current app
-    similar = StackTrace.where(app: @report.application, type: @report.type) if @report
-    @devices = similar.collect { |crash| crash.device }.uniq
+    similar = StackTrace.where(application_id: @report.application, error_type: @report.error_type) if @report
+    devs = []
+    similar.group_by(&:device).each do |device, stacks|
+      devs << [device, stacks.length]
+    end
+    @devices = devs.sort { |a, b| a[1] <=> b[1] }.reverse
 
     # Get the times of the first and last occurrence of this exception
     time_ordered = similar.sort { |a, b| a.crash_time <=> b.crash_time }

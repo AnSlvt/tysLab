@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'octokit'
 gem 'haml'
 gem 'spectator-validates_email', :require => 'validates_email'
+gem 'syntax-highlighter-rails'
 
 group :test do
   gem 'cucumber-rails', require: false

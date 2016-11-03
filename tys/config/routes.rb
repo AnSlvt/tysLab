@@ -9,7 +9,12 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update] do
     resources :applications do
       post 'add_contribs/:repo' => 'contributors#add_github_contribs', as: 'add_github_contribs'
-      resources :stack_traces
+      resources :stack_traces do
+        resources :issues do
+          get 'edit_label/:label' => 'issues#edit_label', as: 'edit_label'
+          post 'edit_state/:state' => 'issues#edit_state', as: 'edit_state'
+        end
+      end
       resources :invitations, only: [:create, :destroy] do
         get "/accept/:token" => "contributors#create", as: "accept_invitation"
       end
@@ -31,5 +36,4 @@ Rails.application.routes.draw do
   get 'users_login' => 'users#login'
   get 'users_authorize' => 'users#authorize'
   get 'users_logout' => 'users#logout'
-
 end
