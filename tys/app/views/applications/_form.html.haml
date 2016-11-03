@@ -1,15 +1,25 @@
-= form_for [current_user, @application] do |f|
-  .input-group
-    = f.label :application_name
-    = f.text_field :application_name
-  .input-group
-    = f.label :author
-    = f.text_field :author, readonly: true, value: current_user.name
-  .input-group
-    = f.label :programming_language
-    = f.select :programming_language, ['C#', 'Java', 'Objective-C']
-  .input-group
-  = f.label :github_repo
-  = f.select :github_repository, @repos
-  .input-group
-  = f.submit
+.container
+  = form_for [current_user, @application] do |f|
+    .row
+      .col-md-12
+        .page-header
+          .btn-toolbar.pull-right
+            .btn-group
+              = submit_tag "Create", :class => 'btn btn-success'
+          %h1.text-info Create a new Application
+      .col-md-6
+        %ul.list-group
+          %li.list-group-item
+            %h3.text-info
+              Name
+            = f.text_field :application_name, :class => 'form-control'
+
+            = f.text_field :author, readonly: true, hidden: true, value: current_user.name
+
+            %h3.text-info
+              Programming language
+            = f.select :programming_language, ['C#', 'Java', 'Objective-C'], :class => 'form-control'
+
+            %h3.text-info
+              Github repository
+            = f.select :github_repository, @repos, :class => 'form-control'

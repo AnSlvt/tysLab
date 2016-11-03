@@ -1,25 +1,23 @@
-<!DOCTYPE html>
+.container
+  = form_tag user_path(@user), method: :put do
+    .row
+      .col-md-12
+        .page-header
+          .btn-toolbar.pull-right
+            .btn-group
+              = submit_tag "Modify", class: "btn btn-success"
+          %h1.text-info Edit user info
+      .col-md-6
+        %ul.list-group
+          %li.list-group-item
+            %h3.text-info
+              Secondary email
+            = email_field_tag :secondary_email, @user.secondary_email, :class => 'form-control'
 
-%html
-  %body
-    Edit user info
-    %br
+            %h3.text-info
+              Phone number
+            = text_field_tag :phone, @user.phone, :class => 'form-control'
 
-    = form_tag user_path(@user), method: :put do
-
-      = label_tag :secondary_email, "Secondary email"
-      = email_field_tag :secondary_email, @user.secondary_email
-
-      %br
-      %br
-      = label_tag :phone, "Phone number"
-      = text_field_tag :phone, @user.phone
-
-      %br
-      %br
-      = label_tag :bio, "Bio"
-      = text_area_tag :bio, @user.bio
-
-      %br
-      %br
-      = submit_tag "Submit"
+            %h3.text-info
+              Bio
+            = text_area_tag :bio, @user.bio, class: 'form-control', rows: '5', cols: '100'
