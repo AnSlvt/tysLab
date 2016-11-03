@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/search_results' => 'homepage#search'
   get '/user_search' => 'homepage#search_user'
   get '/user_mail' => 'users#send_subscribe_mail', as: 'subscribe_mail'
+  post '/upload_stack_trace' => 'stack_traces#create', as: 'upload_stack_trace'
 
   # Users routes and applications routes
   resources :users, only: [:show, :edit, :update] do

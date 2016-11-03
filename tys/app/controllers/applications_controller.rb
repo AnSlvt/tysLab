@@ -10,12 +10,12 @@ class ApplicationsController < ApplicationController
 
     # Stack traces
     raw_reports = @application.stack_traces
-    logger.info "PARAMS #{params} SORT MODE #{params[:sort_mode]}"
     @reports = StackTrace.st_order_by(raw_reports, params[:sort_mode])
 
     # Additional info
     @feedbacks = Feedback.where(application_id: params[:id])
     @github_param = @application.github_repository.sub('/', '_')
+    @token = @application.authorization_token
   end
 
   # GET /users/:user_id/applications/new
@@ -27,6 +27,7 @@ class ApplicationsController < ApplicationController
     end
     @repos.delete nil
     @repos.unshift nil
+    @token = SecureRandom.urlsafe_base64(nil, false)
   end
 
   # POST /users/:user_id/applications
@@ -64,6 +65,6 @@ class ApplicationsController < ApplicationController
   private
   def create_params
     params.require(:application).permit(:application_name, :author,
-                  :programming_language, :github_repository)
+                  :programming_language, :github_repository, :authorization_token)
   end
 end

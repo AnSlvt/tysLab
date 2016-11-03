@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028221043) do
+ActiveRecord::Schema.define(version: 20161103115357) do
 
   create_table "applications", force: :cascade do |t|
     t.string   "application_name",     limit: 255, null: false
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20161028221043) do
     t.string   "github_repository",    limit: 255, null: false
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.string   "authorization_token",  limit: 255, null: false
   end
 
   create_table "contributors", force: :cascade do |t|

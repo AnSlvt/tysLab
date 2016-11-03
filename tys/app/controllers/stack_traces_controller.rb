@@ -1,6 +1,6 @@
 class StackTracesController < ApplicationController
 
-  before_action :logged_in?
+  before_action :logged_in?, except: :create
 
   def new
     StackTrace.new
@@ -8,10 +8,19 @@ class StackTracesController < ApplicationController
 
   # TODO: Creation and create_params
   def create
-    @application = Application.find_by(author: params[:user_id],
-                                      auth_token: params[:auth_token])
-    render file: "public/404.html" and return if !@application
-    StackTrace.create!(create_params)
+    @application = Application.find_by(authorization_token: request.headers["Authorization"])
+    render file: 'public/403.html', status: 403 and return unless @application
+    prm = ActiveSupport::JSON.decode(request.body.read.to_json)
+    logger.info "PARAMS --- #{prm}"
+    StackTrace.create!(application_id: @application.id,
+                      stack_trace_text: prm["StackTrace"],
+                      stack_trace_message: prm["Message"],
+                      application_version: prm["AppVersion"],
+                      fixed: false,
+                      #crash_time: prm["CrashDateTime"],
+                      error_type: prm["Type"],
+                      device: prm["Device"])
+    render nothing: true
   end
 
   def show
@@ -40,10 +49,5 @@ class StackTracesController < ApplicationController
     v = !stack_trace.fixed
     stack_trace.update({ fixed: v })
     redirect_to user_application_path(params[:user_id], params[:application_id])
-  end
-
-  private
-  def create_params
-    params.require(:stack_trace).permit()
   end
 end

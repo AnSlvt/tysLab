@@ -79,3 +79,5 @@
           =button_to "Edit", edit_application_feedback_path(@application, f.id), :method => :get if f.user_name == session[:user_id]
           =button_to "Delete", application_feedback_path(@application, f.id), :method => :delete if f.user_name == session[:user_id] or @application.author == session[:user_id]
           %br
+
+%p= "Token: #{@token}"

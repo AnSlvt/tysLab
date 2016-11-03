@@ -9,7 +9,9 @@
     = f.label :programming_language
     = f.select :programming_language, ['C#', 'Java', 'Objective-C']
   .input-group
-  = f.label :github_repo
-  = f.select :github_repository, @repos
+    = f.label :github_repo
+    = f.select :github_repository, @repos
   .input-group
-  = f.submit
+    = f.hidden_field :authorization_token, value: @token
+  .input-group
+    = f.submit
