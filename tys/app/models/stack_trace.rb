@@ -1,6 +1,10 @@
 class StackTrace < ActiveRecord::Base
   belongs_to :application
   has_many :issues
+
+  validates_associated :application
+  validates :error_type, :application_version, :crash_time, presence: true
+
   def self.st_order_by(unordered, sort_mode)
     if (!sort_mode || sort_mode == '1')
       # grouped by app version number

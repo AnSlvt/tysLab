@@ -2,9 +2,9 @@
 = form_tag user_application_stack_trace_issues_path(@stack_trace.application.author, @stack_trace.application, @stack_trace), :method => :post do
 
   = label :issue, :title, 'title'
-  = text_field :issue, :title
+  = text_field :issue, :title, required: true
 
   = label :issue, :body, 'body'
-  = text_area :issue, :body, value: "#{@stack_trace.error_type}\n#{@stack_trace.stack_trace_text}"
+  = text_area :issue, :body, value: "#{@stack_trace.error_type}\n#{@stack_trace.stack_trace_text}", required: true
 
   = submit_tag 'Save'

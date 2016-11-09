@@ -4,4 +4,7 @@ class Application < ActiveRecord::Base
   has_many :users, through: :contributors
   has_many :feedbacks, dependent: :destroy
   has_many :stack_traces, dependent: :destroy
+
+  validates_associated :user, on: :create
+  validates :application_name, :programming_language, presence: true, on: :create
 end

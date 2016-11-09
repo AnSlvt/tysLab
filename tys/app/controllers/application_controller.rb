@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
 
   def notification
     ActiveSupport::Notifications.subscribe('accepted') do |name, start, finish, id, payload|
-      logger.info "Ricevuta"
       @application = Application.find(payload[:application_id])
       ContributorsMailer.invitation_accepted(payload[:contr_id]).deliver_now if @application.author == session[:user_id]
     end
