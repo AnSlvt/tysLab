@@ -10,10 +10,13 @@ class InvitationsController < ApplicationController
     @invite = Invitation.find_by(leader_name: current_user.name,
                                 target_name: params[:user_id],
                                 application_id: params[:application_id])
-    @application = Application.find(params[:application_id])
-    @target = User.find(params[:user_id])
-    render file: 'public/404.html', status: 403 and return unless session[:user_id] == @application.author
-    render file: 'public/404.html', status: 403 and return if @target.in?(@application.users)
+    @application = Application.find_by(id: params[:application_id])
+    @target = User.find_by(name: params[:user_id])
+
+    render file: 'public/404.html', status: 404 and return unless @application
+    render file: 'public/403.html', status: 403 and return unless session[:user_id] == @application.author
+    render file: 'public/403.html', status: 403 and return if @target.in?(@application.users)
+    render file: 'public/404.html', status: 404 and return unless @target
 
     # If the invitation already exists send the email with the previous token
     # create a new token and an entry in the table otherwise
@@ -42,8 +45,9 @@ class InvitationsController < ApplicationController
 
   # DELETE /users/:user_id/applications/:application_id/invitations/:id
   def destroy
-    @invitation = Invitation.find(params[:id])
-    render file: 'public/404', status: 403 and return unless @invitation.target_name == current_user.name || current_user.name == @invitation.leader_name
+    @invitation = Invitation.find_by(id: params[:id])
+    render file: 'public/404', status: 404 and return unless @invitation
+    render file: 'public/404', status: 404 and return unless @invitation.target_name == current_user.name || current_user.name == @invitation.leader_name
     @invitation.destroy
     redirect_to user_applications_path(current_user)
   end

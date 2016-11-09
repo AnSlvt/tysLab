@@ -1,16 +1,16 @@
 = form_for [current_user, @application] do |f|
   .input-group
     = f.label :application_name
-    = f.text_field :application_name
+    = f.text_field :application_name, required: true
   .input-group
     = f.label :author
     = f.text_field :author, readonly: true, value: current_user.name
   .input-group
     = f.label :programming_language
-    = f.select :programming_language, ['C#', 'Java', 'Objective-C']
+    = f.select :programming_language, ['C#', 'Java', 'Objective-C'], required: true
   .input-group
-    = f.label :github_repo
-    = f.select :github_repository, @repos
+  = f.label :github_repo
+  = f.select :github_repository, @repos, required: false
   .input-group
     = f.hidden_field :authorization_token, value: @token
   .input-group

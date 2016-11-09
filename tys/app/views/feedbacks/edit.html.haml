@@ -3,7 +3,7 @@
 =form_tag application_feedback_path(@feedback.application_id, @feedback.id), method: :patch do
     = label_tag :text, "Text"
     %br
-    =text_area_tag :text, @feedback.text
+    =text_area_tag :text, @feedback.text, required: true
 
     %br
     %br

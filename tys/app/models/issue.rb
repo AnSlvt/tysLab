@@ -1,8 +1,10 @@
 class Issue < ActiveRecord::Base
   belongs_to :stack_trace
+  validates_associated :stack_trace
+  validates :github_repository, presence: true
 
   self.primary_key = "github_number"
-  
+
   def github_issue
     SessionHandler.instance.get_repo_issue(self.github_repository, "#{self.github_number}")
   end
