@@ -36,7 +36,7 @@ class FeedbacksController < ApplicationController
     @application = Application.find(params[:application_id])
     @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
     render file: 'public/404.html', status: 404 and return unless @feedback
-    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name || @application.author == current_user.name
+    render file: 'public/403.html', status: 403 and return unless @feedback.user_name == current_user.name || @application.author == current_user.name
     @feedback.destroy
     redirect_to user_application_path(session[:user_id], params[:application_id])
   end

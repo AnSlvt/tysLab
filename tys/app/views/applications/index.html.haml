@@ -45,7 +45,7 @@
       .page-header
 
       = form_tag subscribe_mail_path, method: :get do
-        %h3.text-info Send an email
+        %h3.text-info Send an invitation
         .input-group
           = email_field_tag :email, params[:email], placeholder: "Send an invitation mail", :class => 'form-control'
           %span.input-group-btn

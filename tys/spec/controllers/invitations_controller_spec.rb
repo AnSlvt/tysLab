@@ -7,7 +7,8 @@ RSpec.describe InvitationsController, type: :controller do
     Application.create!(application_name: 'app',
       author: user.id,
       programming_language: 'C#',
-      github_repository: 'repo')
+      github_repository: 'repo',
+      authorization_token: 'abc')
   }
   let(:invitation_user) { User.create!(name: 'Leo', email: 'l@p.it') }
 
