@@ -1,15 +1,19 @@
-%h1 Edit feedback
+.container
+  = form_tag application_feedback_path(@feedback.application_id, @feedback.id), method: :patch do
+    .row
+      .col-md-12
+        .page-header
+          .btn-toolbar.pull-right
+            .btn-group
+              = submit_tag "Modify", class: "btn btn-success"
+          %h1.text-info Edit feedback
+      .col-md-6
+        %ul.list-group
+          %li.list-group-item
+            %h3.text-info
+              Text
+            = text_area_tag  :text, @feedback.text, class: 'form-control', rows: '5', cols: '100'
 
-=form_tag application_feedback_path(@feedback.application_id, @feedback.id), method: :patch do
-    = label_tag :text, "Text"
-    %br
-    =text_area_tag :text, @feedback.text, required: true
-
-    %br
-    %br
-
-    = label_tag :feedback_type, "Feedback type"
-    %br
-    = select_tag	:feedback_type, options_for_select(["Bug Report", "Feedback"], @feedback.feedback_type), required: true
-    %br
-    = submit_tag "Submit"
+            %h3.text-info
+              Feedback type
+            = select_tag :feedback_type, options_for_select(["Bug Report", "Feedback"], @feedback.feedback_type), required: true

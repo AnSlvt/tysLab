@@ -1,18 +1,26 @@
-%h1 Write here your email
+.container
+  = form_tag application_send_mail_tm_path(@application.id), method: :post do
+    .row
+      .col-md-12.col-md-offset-0
 
-= form_tag application_send_mail_tm_path(@application.id), method: :post do
+        .page-header
+          .btn-toolbar.pull-right
+            .btn-group
+              = submit_tag "Send", class: "btn btn btn-success"
+          %h1.text-info
+            = "Send an email to #{@user.name}"
+    .row
+      .col-md-6
+        %ul.list-group
+          %li.list-group-item
 
-    =label_tag :subject, "Subject"
-    %br
-    =text_field_tag :subject
-    %br
-    %br
-    =label_tag	:text, "Text"
-    %br
-    =text_area_tag :text
-    %br
-    %br
-    =hidden_field_tag :sender, session[:user_id]
-    =hidden_field_tag :user_id, @user.name
-    %br
-    =submit_tag "Send"
+            %h3.text-info
+              Subject
+            = text_field_tag :subject, '', :class => 'form-control'
+
+            %h3.text-info
+              Text
+            = text_area_tag  :text, '', class: 'form-control', rows: '5', cols: '100'
+
+            = hidden_field_tag :sender, session[:user_id]
+            = hidden_field_tag :user_id, @user.name

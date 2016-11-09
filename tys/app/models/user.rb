@@ -5,4 +5,8 @@ class User < ActiveRecord::Base
   has_many :invitations
 
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, presence: true
+
+  def get_github_image
+    SessionHandler.instance.get_github_user(self.name).avatar_url
+  end
 end

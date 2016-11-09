@@ -1,4 +1,4 @@
-.container-fluid
+.container
   .row
     .col-md-12.col-md-offset-0
       .page-header
@@ -9,36 +9,39 @@
           %small
             = "by #{@application.author}, developed in #{@application.programming_language}"
   .row
-    .col-md-12.col-md-offset-0
-      - @feedbacks.each do |f|
-        %p= f.user_name
-        Text:
-        %p= f.text
-        %p= f.feedback_type
-        %br
+    .col-md-6
+      .post
+        .post-heading
+          %h2.text-info Feedbacks
+          .post-footer
+            -unless @feedbacks == []
+              %ul.list-group.comments-list
+                - @feedbacks.each do |c|
+                  -unless c.parent_id
+                    = render partial: "comments", locals: {c: c}
 
-      = form_tag application_feedbacks_path(@application), method: :post do
+    .col-md-6
+      %ul.list-group
+        %li.list-group-item
+          = form_tag application_feedbacks_path(@application), method: :post do
+            .page-header
+              .btn-toolbar.pull-right
+                .btn-group
+                  = submit_tag "Send", class: "btn btn-sm btn-success"
+              %h2.text-info
+                Create a new feedback
+            %h3.text-info
+              Text
+            = text_area_tag  :text, '', class: 'form-control', rows: '5', cols: '100'
 
-        = label_tag :text, "Text"
-        %br
-        = text_area_tag :text
+            %h3.text-info
+              User name
+            = text_field_tag :user_name, '', :class => 'form-control'
 
-        %br
-        %br
-        = label_tag :user_name, "User Name"
-        = text_field_tag :user_name
+            %h3.text-info
+              Feedback type
+            = select_tag :feedback_type, options_for_select(["Bug Report", "Feedback"], "Bug Report"), required: true
 
-        %br
-        %br
-        = label_tag :feedback_type, "Feedback type"
-        %br
-        = select_tag :feedback_type, options_for_select(["Bug Report", "Feedback"], "Bug Report"), required: true
-
-        %br
-        %br
-        = label_tag :email, "Email (optional)"
-        = email_field_tag :email, 'example@mail.com', required: false
-
-        %br
-        %br
-        = submit_tag "Submit"
+            %h3.text-info
+              Email (optional)
+            = email_field_tag :email, 'example@mail.com', :class => 'form-control', required: false

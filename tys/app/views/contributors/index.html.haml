@@ -1,4 +1,4 @@
-.container-fluid
+.container
   .row
     .col-md-12.col-md-offset-0
       .page-header
@@ -6,14 +6,14 @@
           .btn-group
         %h1.text-info
           = "#{@application.application_name} team members list"
-  .row
-    .col-md-6.col-md-offset-0
+    .col-md-6
       %h3.text-info Team Leader
       %ul.list-group
         %li.list-group-item
           %span
             .btn-toolbar.pull-right
               .btn-group
+
                 = link_to user_path(@application.author), :class => "btn btn-info btn-sm" do
                   %i.glyphicon.glyphicon-eye-open
             = "#{@application.author}"
@@ -26,6 +26,8 @@
                 %span
                   .btn-toolbar.pull-right
                     .btn-group
+                      = link_to application_composition_mail_tm_path(@application.id, @application.users[i].name), :class => "btn btn-info btn-sm" do
+                        %i.glyphicon.glyphicon-envelope
                       = link_to user_path(@application.users[i]), :class => "btn btn-info btn-sm" do
                         %i.glyphicon.glyphicon-eye-open
                       - if @application.author == session[:user_id] && @application.users[i].name != session[:user_id]
@@ -37,3 +39,5 @@
           %li.list-group-item
             %span
               No contributors found
+
+    = render partial: 'composition_all'

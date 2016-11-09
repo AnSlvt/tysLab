@@ -1,4 +1,4 @@
-.container-fluid
+.container
   .row
     .col-md-12.col-md-offset-0
       .page-header
@@ -41,6 +41,15 @@
         - if counter == 0
           %li.list-group-item
             %span No Contributor applications (yet)
+
+      .page-header
+
+      = form_tag subscribe_mail_path, method: :get do
+        %h3.text-info Send an email
+        .input-group
+          = email_field_tag :email, params[:email], placeholder: "Send an invitation mail", :class => 'form-control'
+          %span.input-group-btn
+            = submit_tag "Send", :class => "btn btn-default"
     .col-md-6
       - unless @pending == []
         %h3.text-danger Pending requets
@@ -64,7 +73,3 @@
               = button_to "Accept", user_application_invitation_accept_invitation_path(inv.target_name, inv.application_id, inv, inv.invite_token), method: :get, class: "btn btn-success btn-danger btn-sm"
               = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-success btn-danger btn-sm" do
                 %i.glyphicon.glyphicon-trash
-
-= form_tag subscribe_mail_path, method: :get do
-  = email_field_tag :email, params[:email], placeholder: "Send an invitation mail"
-  = submit_tag "Send"
