@@ -1,0 +1,20 @@
+.col-md-6
+  %ul.list-group
+    %li.list-group-item
+      = form_tag application_send_all_tm_path(@application.id), method: :post do
+        .page-header
+          .btn-toolbar.pull-right
+            .btn-group
+              = submit_tag "Send", class: "btn btn-sm btn-success"
+          %h2.text-info
+            Send an email to every contributor
+
+        %h3.text-info
+          Subject
+        = text_field_tag :subject, '', :class => 'form-control'
+
+        %h3.text-info
+          Text
+        = text_area_tag  :text, '', class: 'form-control', rows: '5', cols: '100'
+
+        =hidden_field_tag :sender, session[:user_id]
