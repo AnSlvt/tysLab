@@ -42,11 +42,11 @@ class StackTracesController < ApplicationController
   end
 
   def update
-    stack_trace = StackTrace.find_by(application_id: params[:application_id], id: params[:id])
-    render file: 'public/404.html', status: 404 and return unless stack_trace
+    @stack_trace = StackTrace.find_by(application_id: params[:application_id], id: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @stack_trace
     render file: 'public/403.html', status: 403 and return unless current_user.name == params[:user_id]
-    v = !stack_trace.fixed
-    stack_trace.update({ fixed: v })
+    v = !@stack_trace.fixed
+    @stack_trace.update({ fixed: v })
     redirect_to user_application_path(params[:user_id], params[:application_id])
   end
 end
