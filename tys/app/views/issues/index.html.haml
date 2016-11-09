@@ -28,8 +28,19 @@
                 %td
                   .btn-group
                     - git_issue.labels.each do |label|
-                      = link_to label.name, '#', :class => "btn btn-danger btn-xs"
-                    %a.btn.btn-danger.btn-xs.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                      - if label.name == 'bug'
+                        = link_to label.name, '#', :class => "btn btn-danger btn-xs"
+                      - elsif label.name == 'duplicate'
+                        = link_to label.name, '#', :class => "btn btn-warning btn-xs"
+                      - elsif label.name == 'question'
+                        = link_to label.name, '#', :class => "btn btn-info btn-xs"
+                      - elsif label.name == 'enhancement'
+                        = link_to label.name, '#', :class => "btn btn-warning btn-xs"
+                      - elsif label.name == 'help wanted'
+                        = link_to label.name, '#', :class => "btn btn-success btn-xs"
+                      - else
+                        = link_to label.name, '#', :class => "btn btn-default btn-xs"
+                    %a.btn.btn-default.btn-xs.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
                       &nbsp
                       %span.caret
                       %span.sr-only Toggle Dropdown

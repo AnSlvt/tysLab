@@ -8,16 +8,17 @@
               = link_to "Edit user details",
                           edit_user_path(@user.name),
                           method: :get, :class => "btn btn-info"
-            .dropdown
-              %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
-                Invite to
-                %span.caret
-              %ul.dropdown-menu
-                - current_user.applications.each do |app|
-                  - unless @user.in?(app.users)
-                    %li
-                      = link_to "#{app.application_name}",
-                        user_application_invitations_path(@user, app), method: :post
+            - else
+              .dropdown
+                %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                  Invite to
+                  %span.caret
+                %ul.dropdown-menu
+                  - current_user.applications.each do |app|
+                    - unless @user.in?(app.users)
+                      %li
+                        = link_to "#{app.application_name}",
+                          user_application_invitations_path(@user, app), method: :post
         %h1.text-info
           = "Details about #{@user.name}"
   .row

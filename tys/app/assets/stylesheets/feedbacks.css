@@ -59,9 +59,9 @@
   margin-right: 8px;
 }
 .post .post-footer {
-  border-top: 1px solid #ddd;
-  padding: 15px;
+  padding: 0px;
 }
+
 .post .post-footer .input-group-addon a {
   color: #454545;
 }

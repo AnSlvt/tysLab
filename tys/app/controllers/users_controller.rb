@@ -54,6 +54,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def show_public
+    @user = User.find(params[:user_id])
+    @applications = Application.where(author: params[:user_id])
+  end
+
   def edit
     @user = User.find(params[:id])
   end
