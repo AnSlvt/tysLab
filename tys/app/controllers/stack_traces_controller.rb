@@ -6,18 +6,17 @@ class StackTracesController < ApplicationController
     StackTrace.new
   end
 
-  # TODO: Creation and create_params
   def create
     @application = Application.find_by(authorization_token: request.headers["Authorization"])
     render file: 'public/403.html', status: 403 and return unless @application
-    prm = ActiveSupport::JSON.decode(request.body.read.to_json)
-    logger.info "PARAMS --- #{prm}"
+    prm = JSON.parse(request.body.read)
+    prm = prm["Content"]
     StackTrace.create!(application_id: @application.id,
                       stack_trace_text: prm["StackTrace"],
                       stack_trace_message: prm["Message"],
                       application_version: prm["AppVersion"],
                       fixed: false,
-                      #crash_time: prm["CrashDateTime"],
+                      crash_time: prm["CrashDateTime"],
                       error_type: prm["Type"],
                       device: prm["Device"])
     render nothing: true

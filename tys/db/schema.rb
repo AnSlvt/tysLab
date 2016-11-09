@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20161103115357) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.boolean  "fixed"
-    t.datetime "crash_time"
+    t.datetime "crash_time",                        null: false
     t.string   "error_type",          limit: 255
     t.string   "device",              limit: 255
   end
