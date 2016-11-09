@@ -8,24 +8,17 @@
           = "#{@application.application_name}"
           %small
             = "by #{@application.author}, developed in #{@application.programming_language}"
-    .col-md-12.col-md-offset-0
-      .page-header
-        %h3.text-info Feedbacks
+  .row
     .col-md-6
-      %ul.list-group
-        - @feedbacks.each do |f|
-          %li.list-group-item
-            .page-header
-              .btn-toolbar.pull-right
-                .btn-group
-              %h4.text-info
-                = f.user_name
-            %span.label.label-warning
-              = f.feedback_type
-            %br
-            %br
-            %p
-              = f.text
+      .post
+        .post-heading
+          %h2.text-info Feedbacks
+          .post-footer
+            -unless @feedbacks == []
+              %ul.list-group.comments-list
+                - @feedbacks.each do |c|
+                  -unless c.parent_id
+                    = render partial: "comments", locals: {c: c}
 
     .col-md-6
       %ul.list-group

@@ -42,5 +42,9 @@ class SessionHandler
     @@oct_client.close_issue(repo, number)
   end
 
+  def get_github_user(username)
+    @@oct_client.user(username)
+  end
+
   private_class_method :new
 end

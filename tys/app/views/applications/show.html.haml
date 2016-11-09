@@ -67,24 +67,16 @@
             = "Stack Trace list"
         %h5.text-muted
           (Nothing to show)
-      .col-md-12.col-md-offset-0
-        .page-header
-          %h3.text-info Feedbacks
-      .col-md-6
-        %ul.list-group
-          - @feedbacks.each do |f|
-            %li.list-group-item
-              .page-header
-                .btn-toolbar.pull-right
-                  .btn-group
-                    =link_to "Answer", application_new_feedback_path(@application, f.id), :class => 'btn btn-xs btn-default', :method => :get
-                    =link_to "Edit", edit_application_feedback_path(@application, f.id), :class => 'btn btn-xs btn-default', :method => :get if f.user_name == session[:user_id]
-                    =link_to "Delete", application_feedback_path(@application, f.id), :class => 'btn btn-xs btn-danger', :method => :delete if f.user_name == session[:user_id] || @application.author == session[:user_id]
-                %h4.text-info
-                  = f.user_name
-              %span.label.label-warning
-                = f.feedback_type
-              %br
-              %br
-              %p
-                = f.text
+      .col-md-12
+        .post
+          .post-heading
+            %h3.text-info Feedbacks
+            .post-footer
+              -unless @feedbacks == []
+                %ul.list-group.comments-list
+                  - @feedbacks.each do |c|
+                    -unless c.parent_id
+                      = render partial: "comments", locals: {c: c}
+              - else
+                %h5.text-muted
+                  (Nothing to show)

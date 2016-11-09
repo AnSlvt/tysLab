@@ -4,5 +4,8 @@ class User < ActiveRecord::Base
   has_many :applications, through: :contributors
   has_many :invitations
 
+  def get_github_image
+    SessionHandler.instance.get_github_user(self.name).avatar_url
+  end
 #  validates :email
 end
