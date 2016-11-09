@@ -4,6 +4,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name, primary_key: true
       t.string :email, null: false
 
+      t.index :email, unique: true
       t.timestamps null: false
     end
   end

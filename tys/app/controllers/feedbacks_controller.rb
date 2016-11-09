@@ -4,8 +4,12 @@ class FeedbacksController < ApplicationController
 
   # GET /application/:application_id/feedbacks/:parent_id
   def new
-    @application = Application.find(params[:application_id])
+    @application = Application.find_by(id: params[:application_id])
+    @target = Feedback.find_by(id: params[:parent_id])
+    render file: 'public/404.html', status: 404 and return unless @application
+    render file: 'public/404.html', status: 404 and return unless @target
     @user = User.find(session[:user_id])
+    render file: 'public/403.html', status: 403 and return unless @user.in?(@application.users)
   end
 
   # POST /application/:application_id/feedbacks
@@ -16,7 +20,8 @@ class FeedbacksController < ApplicationController
     user_id = Application.find(app_id).author
     if  session[:user_id]
       if @feedback.parent_id
-        parent_feedback = Feedback.find(@feedback.parent_id)
+        parent_feedback = Feedback.find_by(id: @feedback.parent_id)
+        render file: 'public/404.html', status: 404 and return unless parent_feedback
         # parent_user = User.find(parent_feedback.user_name)
         FeedbackMailer.response_email(parent_feedback, @feedback).deliver_now if parent_feedback.email
       end
@@ -30,7 +35,7 @@ class FeedbacksController < ApplicationController
   def destroy
     @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
     render file: 'public/404.html', status: 404 and return unless @feedback
-    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name
+    render file: 'public/403.html', status: 403 and return unless @feedback.user_name == current_user.name
     @feedback.destroy
     redirect_to user_application_path(session[:user_id], params[:application_id])
   end
@@ -39,7 +44,7 @@ class FeedbacksController < ApplicationController
   def edit
     @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
     render file: 'public/404.html', status: 404 and return unless @feedback
-    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name
+    render file: 'public/403.html', status: 403 and return unless @feedback.user_name == current_user.name
     @user = User.find(session[:user_id])
   end
 
@@ -47,7 +52,7 @@ class FeedbacksController < ApplicationController
   def update
     @feedback = Feedback.find_by(application_id: params[:application_id], id: params[:id])
     render file: 'public/404.html', status: 404 and return unless @feedback
-    render file: 'public/403.hmtl', status: 403 and return unless @feedback.user_name == current_user.name
+    render file: 'public/403.html', status: 403 and return unless @feedback.user_name == current_user.name
     app_id = @feedback.application_id
     user_id = Application.find(app_id).author
     if  @feedback.update_attributes(update_params)

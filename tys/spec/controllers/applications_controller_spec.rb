@@ -10,7 +10,8 @@ RSpec.describe ApplicationsController, type: :controller do
       Application.create!(application_name: 'app',
         author: user.id,
         programming_language: 'C#',
-        github_repository: 'repo')
+        github_repository: 'repo',
+        authorization_token: "abc")
     }
     FactoryGirl.define do
       factory :application do
@@ -18,6 +19,7 @@ RSpec.describe ApplicationsController, type: :controller do
         author  "AnSlvt"
         programming_language "C#"
         github_repository 'repo'
+        authorization_token 'abcd'
       end
     end
     let(:oct) { Octokit::Client.new(access_token: ENV['oct_test_token']) }
@@ -80,7 +82,8 @@ RSpec.describe ApplicationsController, type: :controller do
         application = Application.create(application_name: 'app',
           author: 'AnSlvt',
           programming_language: 'C#',
-          github_repository: 'repo')
+          github_repository: 'repo',
+          authorization_token: 'abcde')
         expect {
           delete :destroy, { user_id: application.author, id: application.id }, { user_id: application.author }
         }.to change(Application, :count).by(-1)
@@ -111,7 +114,8 @@ RSpec.describe ApplicationsController, type: :controller do
       Application.create!(application_name: 'app',
         author: 'AnSlvt',
         programming_language: 'C#',
-        github_repository: 'repo')
+        github_repository: 'repo',
+        authorization_token: 'abcdef')
     }
 
     let(:not_allowed_user) do
