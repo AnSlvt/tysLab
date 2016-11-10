@@ -84,6 +84,16 @@ RSpec.describe Feedback, type: :model do
       expect(feedback).to_not be_valid
     end
 
+    it 'fails becouse text is missing' do
+      feedback = Feedback.new(text: 'bella',
+        application_id: app.id,
+        feedback_type: 'Bug Report',
+        email: 'a@b',
+        user_name: 'pippo',
+        parent_id: nil)
+      expect(feedback).to_not be_valid
+    end
+
     it 'fails becouse application_id is associated to an invalid application' do
       application = Application.new(application_name: 'app',
         author: nil,
