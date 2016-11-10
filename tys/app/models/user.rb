@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :applications, through: :contributors
   has_many :invitations
 
+  validates :name, presence: true
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, presence: true
 
   def get_github_image
