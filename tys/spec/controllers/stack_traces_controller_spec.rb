@@ -30,6 +30,7 @@ RSpec.describe StackTracesController, type: :controller do
 
     context 'GET #show' do
       it 'shows the details of a given stack trace' do
+        app.users << user
         get :show, { user_id: user.id, application_id: app.id, id: stack.id }, { user_id: user.id }
         expect(assigns(@report)[:report]).to be_kind_of(StackTrace)
         expect(assigns(@most_recent)[:report]).to be_kind_of(StackTrace)
@@ -80,6 +81,19 @@ RSpec.describe StackTracesController, type: :controller do
         expect(response).to render_template(file: "#{Rails.root}/public/404.html")
         expect(response.status).to eq 404
       end
+
+      it 'renders 403 if the current user is neither a contributor nor the author of the application' do
+        not_allowed_user = User.create!( name: 'LeonardoPetrucci', email: 'a@j.it' )
+        get :show, { user_id: user.id, application_id: app.id, id: stack.id }, { user_id: not_allowed_user.id}
+        expect(response).to render_template(file: "#{Rails.root}/public/403.html")
+        expect(response.status).to eq 403
+      end
+
+      it 'renders 401 if the user is not logged in' do
+        get :show, { user_id: user.id, application_id: app.id, id: stack.id }
+        expect(response).to render_template(file: "#{Rails.root}/public/401.html")
+        expect(response.status).to eq 401
+      end
     end
 
     context 'PUT/PATCH #update' do
@@ -114,6 +128,12 @@ RSpec.describe StackTracesController, type: :controller do
         put :update, { user_id: user.id, application_id: app.id, id: stack_trace_local.id}, { user_id: not_allowed_user.id }
         expect(response).to render_template(file: "#{Rails.root}/public/403.html")
         expect(response.status).to eq 403
+      end
+
+      it 'renders 401 if the user is not logged in' do
+        put :update, { user_id: user.id, application_id: app.id, id: stack.id }
+        expect(response).to render_template(file: "#{Rails.root}/public/401.html")
+        expect(response.status).to eq 401
       end
     end
   end

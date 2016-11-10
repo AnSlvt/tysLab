@@ -50,17 +50,13 @@ class UsersController < ApplicationController
     redirect_to root_path, notice: "Logged out!"
   end
 
-  def show
-    @user = User.find_by(name: params[:id])
-    render file: 'public/404.html', status: 404 and return unless @user
-  end
-
   def show_public
     @user = User.find_by(name: params[:user_id])
     render file: 'public/404.html', status: 404 and return unless @user
     @applications = Application.where(author: params[:user_id])
   end
 
+  # GET /users/:id/edit
   def edit
     @user = User.find_by(name: params[:id])
     render file: 'public/404.html', status: 404 and return unless @user
@@ -68,11 +64,11 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find_by(name: params[:id])
-    render file: 'public/404.html', status: 404 and return unless user
+    @user = User.find_by(name: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @user
     render file: 'public/403.html', status: 403 and return unless current_user.name == params[:id]
-    user.update({ secondary_email: params[:secondary_email], phone: params[:phone], bio: params[:bio] })
-    redirect_to user_path(user)
+    @user.update({ secondary_email: params[:secondary_email], phone: params[:phone], bio: params[:bio] })
+    redirect_to user_path(@user)
   end
 
   private
