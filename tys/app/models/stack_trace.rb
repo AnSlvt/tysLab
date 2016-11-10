@@ -3,7 +3,7 @@ class StackTrace < ActiveRecord::Base
   has_many :issues
 
   validates_associated :application
-  validates :error_type, :application_version, :crash_time, presence: true
+  validates :application_id, :error_type, :application_version, :crash_time, presence: true
 
   def self.st_order_by(unordered, sort_mode)
     if (!sort_mode || sort_mode == '1')
