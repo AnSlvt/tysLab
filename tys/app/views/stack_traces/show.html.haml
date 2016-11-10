@@ -14,8 +14,15 @@
         %li.list-group-item
           = @report.error_type
       %h3.text-info Call stack
-      %pre{ class: 'brush: csharp' }
-        = @report.stack_trace_text
+      - if @report.application.programming_language == 'C#'
+        %pre{ class: 'brush: csharp' }
+          = @report.stack_trace_text
+      - elsif @report.application.programming_language == 'Java'
+        %pre{ class: 'brush: java' }
+          = @report.stack_trace_text
+      - elsif @report.application.programming_language == 'Objective-C'
+        %pre{ class: 'brush: java' }
+          = @report.stack_trace_text
       %h3.text-info Exception date
       %ul.list-group
         %li.list-group-item

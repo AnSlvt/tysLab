@@ -11,21 +11,30 @@ class StackTracesController < ApplicationController
     render file: 'public/403.html', status: 403 and return unless @application
     prm = JSON.parse(request.body.read)
     prm = prm["Content"]
-    StackTrace.create!(application_id: @application.id,
-                      stack_trace_text: prm["StackTrace"],
-                      stack_trace_message: prm["Message"],
-                      application_version: prm["AppVersion"],
-                      fixed: false,
-                      crash_time: prm["CrashDateTime"],
-                      error_type: prm["Type"],
-                      device: prm["Device"])
+    begin
+      StackTrace.create!(application_id: @application.id,
+                        stack_trace_text: prm["StackTrace"],
+                        stack_trace_message: prm["Message"],
+                        application_version: prm["AppVersion"],
+                        fixed: false,
+                        crash_time: prm["CrashDateTime"],
+                        error_type: prm["Type"],
+                        device: prm["Device"])
+    rescue RecordInvalid
+      render file: 'public/500.html', status: 500 and return
+    end
     render nothing: true
   end
 
   def show
 
+    app = Application.find_by(author: params[:user_id], id: params[:application_id])
+    render file: 'public/404.html', status: 404 and return unless app
+    render file: 'public/403.html', status: 403 and return unless current_user.in?(app.users)
+
     # Get the current stack trace
-    @report = StackTrace.find(params[:id])
+    @report = StackTrace.find_by(id: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @report
 
     # Get the list of devices that generated the same exception in the current app
     similar = StackTrace.where(application_id: @report.application, error_type: @report.error_type) if @report

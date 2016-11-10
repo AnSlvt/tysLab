@@ -24,12 +24,16 @@ class InvitationsController < ApplicationController
       token = @invite.invite_token
     else
       token = SecureRandom.urlsafe_base64(nil, true)
-      @invite = Invitation.create!({
-            leader_name: current_user.name,
-            target_name: params[:user_id],
-            application_id: params[:application_id],
-            invite_token: token.to_s
-      })
+      begin
+        @invite = Invitation.create!({
+          leader_name: current_user.name,
+          target_name: params[:user_id],
+          application_id: params[:application_id],
+          invite_token: token.to_s
+        })
+      rescue RecordInvalid
+        render file: 'public/500.html', status: 500 and return
+      end
     end
 
     link = user_application_invitation_accept_invitation_url(

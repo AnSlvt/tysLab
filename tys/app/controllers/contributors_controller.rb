@@ -17,10 +17,14 @@ class ContributorsController < ApplicationController
     render file: "public/404.html" and return unless token.to_s == invitation.invite_token
     leader = User.find_by(name: invitation.leader_name)
     invitation.destroy
-    contr_id = Contributor.create!({
-      user_id: params[:user_id],
-      application_id: params[:application_id]
-    })
+    begin
+      contr_id = Contributor.create!({
+        user_id: params[:user_id],
+        application_id: params[:application_id]
+      })
+    rescue RecordInvalid
+      render file: 'public/500.html', status: 500 and return
+    end
     ActiveSupport::Notifications.instrument("accepted", contr_id: contr_id, application_id: params[:application_id]) do
     end
     redirect_to user_application_path(leader, params[:application_id]), method: :get
@@ -42,11 +46,15 @@ class ContributorsController < ApplicationController
     existing_team_members_names = application.users.map { |u| u.name}
 
     # For all the existings users that are github contribs create a row in Contributor
-    existing_contribs.each do |c|
-      Contributor.create!({
-        user_id: c,
-        application_id: params[:application_id]
-      }) unless c.in?(existing_team_members_names) # don't duplicate team members
+    begin
+      existing_contribs.each do |c|
+        Contributor.create!({
+          user_id: c,
+          application_id: params[:application_id]
+        }) unless c.in?(existing_team_members_names) # don't duplicate team members
+      end
+    rescue RecordInvalid
+      render file: 'public/500.html', status: 500 and return
     end
     redirect_to application_contributors_path(params[:application_id])
   end

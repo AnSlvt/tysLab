@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     session[:user_id] = user.login.to_s
     flash[:notice] = "#{user.login} succesfully logged in!"
     @user = User.find_by(name: user.login.to_s)
-    if (!@user)
+    unless @user
       begin
         @user = User.create!(name: user.login.to_s,
                              email: client.emails[0][:email].to_s)
@@ -42,6 +42,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by(name: params[:id])
+    render file: 'public/404.html', status: 404 and return unless @user
   end
 
   def logout
@@ -55,7 +56,8 @@ class UsersController < ApplicationController
   end
 
   def show_public
-    @user = User.find(params[:user_id])
+    @user = User.find_by(name: params[:user_id])
+    render file: 'public/404.html', status: 404 and return unless @user
     @applications = Application.where(author: params[:user_id])
   end
 

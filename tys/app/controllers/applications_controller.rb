@@ -32,7 +32,11 @@ class ApplicationsController < ApplicationController
 
   # POST /users/:user_id/applications
   def create
-    @application = Application.create!(create_params)
+    begin
+      @application = Application.create!(create_params)
+    rescue RecordInvalid
+      render file: 'public/500.html', status: 500 and return
+    end
     @application.users << current_user
     flash[:notice] = "#{@application.application_name} was successfully created."
   end

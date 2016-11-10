@@ -14,11 +14,15 @@ class IssuesController < ApplicationController
   def create
     @stack_trace = StackTrace.find(params[:stack_trace_id])
     github_issue = SessionHandler.instance.create_stack_trace_issue(@stack_trace.application.github_repository, create_params[:title], create_params[:body])
-    @issue = Issue.create!({
-      github_repository: @stack_trace.application.github_repository,
-      github_number: github_issue.number,
-      stack_trace_id: params[:stack_trace_id]
+    begin
+      @issue = Issue.create!({
+        github_repository: @stack_trace.application.github_repository,
+        github_number: github_issue.number,
+        stack_trace_id: params[:stack_trace_id]
       })
+    rescue RecordInvalid
+      render file: 'public/500.html', status: 500 and return
+    end
     redirect_to user_application_stack_trace_issues_path(@issue.stack_trace.application.author, @issue.stack_trace.application, @issue.stack_trace)
   end
 

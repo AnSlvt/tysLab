@@ -14,8 +14,11 @@ class FeedbacksController < ApplicationController
 
   # POST /application/:application_id/feedbacks
   def create
-    # TODO: Validetes missing in model feedback.rb -> email control
-    @feedback = Feedback.create!(feedback_params)
+    begin
+      @feedback = Feedback.create!(feedback_params)
+    rescue RecordInvalid
+      render file: 'public/500.html', status: 500 and return
+    end
     app_id = @feedback.application_id
     user_id = Application.find(app_id).author
     if  session[:user_id]
