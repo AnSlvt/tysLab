@@ -6,11 +6,26 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.create({ name: 'LeonardoPetrucci', email: 'leonardo.petrucci94@gmail.com' })
-application = Application.create({ application_name: 'TSM', author: user.name, programming_language: 'C#', github_repository: 'LeonardoPetrucci/toy_app' })
-user.applications << application
-StackTrace.create([
-  { application_id: application.id, device: "Lumia 950XL", stack_trace_message: "Che cazzo è successo!", error_type: "NullReferenceException", stack_trace_text: "at Main.Blam() at Lib.Test()", application_version: "1.0.0.0" },
-  { application_id: application.id, device: "Lumia 640", stack_trace_message: "Bubu settete!", error_type: "NullReferenceException", stack_trace_text: "at IPorc.MoveNext() at Main.Run() at Main.Zio()", application_version: "1.1.0.0" },
-  { application_id: application.id, device: "Lumia 640", stack_trace_message: "WTF", error_type: "ArgumentPorcoddioException", stack_trace_text: "Lockr.Helpers.Extensions.To<UIElement>(object target) \nat\nServices.Navigation.<PerformNavigation>d_27.MoveNext()\nat\nSystem.Runtime.Throw(Task task)\nat\nLockr.Services.NavigationService.<Navigate>d_24.Move()\nat\nRuntime.CompilerServices.BuilderCore.<>c.<ThrowAsync>b__6_0(Object state)\nEnd of previous locations\nSystem.Threading.WinRTSynchronizationCOntext.Invoker.InvokeCore()", application_version: "1.1.0.0" }
-  ])
+users = User.create([
+      { name: 'LeonardoPetrucci', email: 'leonardo.petrucci94@gmail.com' },
+      { name: 'Sergio0694', email: 'Sergio0694@live.com' },
+      { name: 'AnSlvt', email: 'andrea.slvt94@gmail.com'},
+      { name: 'marcozecchini', email: 'marcozecchini.2594@gmail.com' }
+])
+
+tokens = []
+0..5.times do
+  tokens << SecureRandom.urlsafe_base64(nil, true)
+end
+
+anslvt_apps = Application.create([
+  { application_name: 'app_1', author: users[2].name, programming_language: 'C#', github_repository: 'AnSlvt/test_repo', authorization_token: tokens[0] },
+  { application_name: 'app_2', author: users[2].name, programming_language: 'C#', github_repository: 'AnSlvt/test_repo', authorization_token: tokens[1] }
+])
+
+anslvt_apps.each do |app|
+  app.users << users[2]
+end
+
+leo_app = Application.create( application_name: 'app_1', author: users[0].name, programming_language: 'C#', github_repository: 'LeonardoPetrucci/toy_app', authorization_token: tokens[2] )
+leo_app.users << users[0]
