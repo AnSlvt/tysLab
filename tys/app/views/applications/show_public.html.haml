@@ -12,14 +12,15 @@
     .col-md-6
       .post
         .post-heading
-          %h2.text-info Feedbacks
+          %h1.text-success Feedbacks
           .post-footer
             -unless @feedbacks == []
               %ul.list-group.comments-list
                 - @feedbacks.each do |c|
                   -unless c.parent_id
                     = render partial: "comments", locals: {c: c}
-
+            -else
+              Nobody left a feedback. Wanna be the first?
     .col-md-6
       %ul.list-group
         %li.list-group-item

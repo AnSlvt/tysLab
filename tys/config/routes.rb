@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       end
       get '/show_public' => 'applications#show_public'
     end
+    get '/show_public' => 'users#show_public'
   end
 
   resources :application, only: '' do

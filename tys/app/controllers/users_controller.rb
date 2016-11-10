@@ -54,6 +54,11 @@ class UsersController < ApplicationController
     render file: 'public/404.html', status: 404 and return unless @user
   end
 
+  def show_public
+    @user = User.find(params[:user_id])
+    @applications = Application.where(author: params[:user_id])
+  end
+
   def edit
     @user = User.find_by(name: params[:id])
     render file: 'public/404.html', status: 404 and return unless @user

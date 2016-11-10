@@ -14,7 +14,7 @@
     %script{:crossorigin => "anonymous", :integrity => "sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", :src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
   %body
     %header
-      %nav.navbar.navbar-inverse
+      %nav.navbar.navbar-inverse.navbar-fixed-top
         .container-fluid
           .navbar-header
             - if session[:user_id]
@@ -39,10 +39,16 @@
                     %i.glyphicon.glyphicon-log-in
                     &nbsp;Login with
                     %strong GitHub
-            = form_tag search_results_path, method: :get, :class => 'navbar-form' do
-              .form-group
-                = text_field_tag :search_params, params[:search_params], :id => "home_search", :class => 'form-control', :placeholder => "search users...", :type => "search"
-              = submit_tag "Search", :for => "home_search", :class => "btn btn-primary"
+            - unless session[:user_id]
+              = form_tag search_results_path, method: :get, :class => 'navbar-form' do
+                .form-group
+                  = text_field_tag :search_params, params[:search_params], :id => "home_search", :class => 'form-control', :placeholder => "Users and apps...", :type => "search"
+                = submit_tag "Search", :for => "home_search", :class => "btn btn-primary"
+            - else
+              = form_tag user_search_path, method: :get, :class => 'navbar-form' do
+                .form-group
+                  = text_field_tag :search_params, params[:search_params], :id => "home_search", :class => 'form-control', :placeholder => "Users...", :type => "search"
+                = submit_tag "Search", :for => "home_search", :class => "btn btn-primary"
     %section
       - if flash[:notice]
         .container-fluid

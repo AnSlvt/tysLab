@@ -13,7 +13,8 @@
           %span
             .btn-toolbar.pull-right
               .btn-group
-
+                = link_to application_composition_mail_tm_path(@application.id, @application.author), :class => "btn btn-info btn-sm" do
+                  %i.glyphicon.glyphicon-envelope
                 = link_to user_path(@application.author), :class => "btn btn-info btn-sm" do
                   %i.glyphicon.glyphicon-eye-open
             = "#{@application.author}"

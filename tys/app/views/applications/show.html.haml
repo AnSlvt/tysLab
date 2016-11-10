@@ -21,11 +21,19 @@
         .page-header
           .btn-toolbar.pull-right
             .btn-group
-              = link_to "Sort by", "#", :class => "btn btn-default btn-sm", :disabled => "disabled"
-              = link_to "App version", user_application_path(@application.author, @application, sort_mode: 1), method: :get, :class => "btn btn-info btn-sm"
-              = link_to "Alhabetical order", user_application_path(@application.author, @application, sort_mode: 2), method: :get, :class => "btn btn-info btn-sm"
-              = link_to "Frequency", user_application_path(@application.author, @application, sort_mode: 3), method: :get, :class => "btn btn-info btn-sm"
-              = link_to "Fixed Status", user_application_path(@application.author, @application, sort_mode: 4), method: :get, :class => "btn btn-info btn-sm"
+              .dropdown
+                %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+                  Sort by
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    = link_to "App version", user_application_path(@application.author, @application, sort_mode: 1), method: :get
+                  %li
+                    = link_to "Alhabetical order", user_application_path(@application.author, @application, sort_mode: 2), method: :get
+                  %li
+                    = link_to "Frequency", user_application_path(@application.author, @application, sort_mode: 3), method: :get
+                  %li
+                    = link_to "Fixed Status", user_application_path(@application.author, @application, sort_mode: 4), method: :get
           %h3.text-info
             = "Stack Trace list"
         .table
@@ -67,10 +75,11 @@
             = "Stack Trace list"
         %h5.text-muted
           (Nothing to show)
+    .row
       .col-md-12
         .post
           .post-heading
-            %h3.text-info Feedbacks
+            %h3.text-success Feedbacks
             .post-footer
               -unless @feedbacks == []
                 %ul.list-group.comments-list

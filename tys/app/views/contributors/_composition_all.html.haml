@@ -7,7 +7,7 @@
             .btn-group
               = submit_tag "Send", class: "btn btn-sm btn-success"
           %h2.text-info
-            Send an email to every contributor
+            Send an email
 
         %h3.text-info
           Subject
@@ -15,6 +15,6 @@
 
         %h3.text-info
           Text
-        = text_area_tag  :text, '', class: 'form-control', rows: '5', cols: '100'
+        = text_area_tag  :text, '', class: 'form-control', rows: '5', cols: '100', placeholder: "This email will be sent to every contributor, including the team leader"
 
         =hidden_field_tag :sender, session[:user_id]
