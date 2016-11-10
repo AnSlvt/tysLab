@@ -3,12 +3,25 @@
     .col-md-12.col-md-offset-0
       .page-header
         .btn-toolbar.pull-right
+          %button.btn.btn-primary{"data-target" => "#myModal", "data-toggle" => "modal", :type => "button"} Get token
+          / Modal
+          #myModal.modal.fade{:role => "dialog"}
+            .modal-dialog
+              / Modal content
+              .modal-content
+                .modal-header
+                  %button.close{"data-dismiss" => "modal", :type => "button"} ×
+                  %h4.modal-title.text-success
+                    = "Here is your token for #{@application.application_name}"
+                .modal-body
+                  %p
+                    = "#{@token}"
           .btn-group
             = link_to 'Team members list', application_contributors_path(@application), :class => "btn btn-info"
             - unless @application.github_repository == ""
               = link_to 'GitHub repository', "https://github.com/#{@application.github_repository}", :class => "btn btn-info"
               - if session[:user_id] == @application.author
-                = link_to('Add github collaborators to the team', user_application_add_github_contribs_path(@application.author,
+                = link_to('Add GitHub collaborators', user_application_add_github_contribs_path(@application.author,
                   @application,
                   @github_param), method: :post, :class => "btn btn-info")
         %h1.text-info
@@ -89,5 +102,3 @@
               - else
                 %h5.text-muted
                   (Nothing to show)
-
-%p= "Token: #{@token}"
