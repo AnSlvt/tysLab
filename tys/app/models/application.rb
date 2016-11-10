@@ -6,5 +6,6 @@ class Application < ActiveRecord::Base
   has_many :stack_traces, dependent: :destroy
 
   validates_associated :user, on: :create
+  validates_inclusion_of :programming_language, in: ['C#', 'Java', 'Objective-C']
   validates :application_name, :programming_language, presence: true, on: :create
 end
