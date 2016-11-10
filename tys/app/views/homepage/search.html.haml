@@ -17,7 +17,7 @@
                   .btn-group
                     = link_to "https://github.com/#{r.github_repository}", :class => "btn btn-info btn-sm" do
                       %i.glyphicon.glyphicon-globe
-                    = link_to user_application_show_public_path(r.author, r), :class => "btn btn-info btn-sm" do
+                    = link_to user_application_show_public_path(r.author, r), :class => "btn btn-info btn-sm", :id => "show_public_button_#{r.application_name}" do
                       %i.glyphicon.glyphicon-eye-open
                 = "#{r.application_name}, by #{r.author}"
       - else
@@ -34,7 +34,7 @@
               %span
                 .btn-toolbar.pull-right
                   .btn-group
-                    = link_to user_path(user), method: :get, :class => "btn btn-info btn-sm" do
+                    = link_to user_path(user), method: :get, :class => "btn btn-info btn-sm", :id => "button-user-#{user.name}" do
                       %i.glyphicon.glyphicon-eye-open
                 = user.name
       - else
