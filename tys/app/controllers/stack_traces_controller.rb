@@ -20,7 +20,7 @@ class StackTracesController < ApplicationController
                         crash_time: prm["CrashDateTime"],
                         error_type: prm["Type"],
                         device: prm["Device"])
-    rescue RecordInvalid
+    rescue ActiveRecord::RecordInvalid => invalid
       render file: 'public/500.html', status: 500 and return
     end
     render nothing: true

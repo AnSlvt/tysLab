@@ -22,7 +22,7 @@ class ContributorsController < ApplicationController
         user_id: params[:user_id],
         application_id: params[:application_id]
       })
-    rescue RecordInvalid
+    rescue ActiveRecord::RecordInvalid => invalid
       render file: 'public/500.html', status: 500 and return
     end
     ActiveSupport::Notifications.instrument("accepted", contr_id: contr_id, application_id: params[:application_id]) do
@@ -53,7 +53,7 @@ class ContributorsController < ApplicationController
           application_id: params[:application_id]
         }) unless c.in?(existing_team_members_names) # don't duplicate team members
       end
-    rescue RecordInvalid
+    rescue ActiveRecord::RecordInvalid => invalid
       render file: 'public/500.html', status: 500 and return
     end
     redirect_to application_contributors_path(params[:application_id])

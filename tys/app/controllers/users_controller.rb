@@ -27,7 +27,7 @@ class UsersController < ApplicationController
       begin
         @user = User.create!(name: user.login.to_s,
                              email: client.emails[0][:email].to_s)
-      rescue RecordInvalid
+      rescue ActiveRecord::RecordInvalid => invalid
         render file: 'public/500.html', status: 500 and return
       end
     end

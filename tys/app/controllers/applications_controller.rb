@@ -36,7 +36,7 @@ class ApplicationsController < ApplicationController
   def create
     begin
       @application = Application.create!(create_params)
-    rescue RecordInvalid
+    rescue ActiveRecord::RecordInvalid => invalid
       render file: 'public/500.html', status: 500 and return
     end
     @application.users << current_user

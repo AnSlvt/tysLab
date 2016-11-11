@@ -24,7 +24,7 @@ class IssuesController < ApplicationController
         github_number: github_issue.number,
         stack_trace_id: @stack_trace.id
       })
-    rescue RecordInvalid
+    rescue ActiveRecord::RecordInvalid => invalid
       render file: 'public/500.html', status: 500 and return
     end
     redirect_to user_application_stack_trace_issues_path(@stack_trace.application.author, @stack_trace.application, @stack_trace)

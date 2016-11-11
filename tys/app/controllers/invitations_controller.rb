@@ -31,7 +31,7 @@ class InvitationsController < ApplicationController
           application_id: params[:application_id],
           invite_token: token.to_s
         })
-      rescue RecordInvalid
+      rescue ActiveRecord::RecordInvalid => invalid
         render file: 'public/500.html', status: 500 and return
       end
     end

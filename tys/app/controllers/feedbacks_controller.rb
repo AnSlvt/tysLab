@@ -16,8 +16,12 @@ class FeedbacksController < ApplicationController
   def create
     begin
       @feedback = Feedback.create!(feedback_params)
-    rescue RecordInvalid
-      render file: 'public/500.html', status: 500 and return
+    rescue ActiveRecord::RecordInvalid => invalid
+      if session[:user_id]
+        redirect_to application_new_feedback_path(params[:application_id], params[:parent_id]), notice: "Not valid Record" and return
+      else
+        redirect_to user_application_show_public_path(Application.find(params[:application_id]).author, params[:application_id]), notice: 'Not valid Record' and return
+      end
     end
     app_id = @feedback.application_id
     user_id = Application.find(app_id).author
