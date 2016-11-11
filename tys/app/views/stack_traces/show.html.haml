@@ -13,6 +13,11 @@
       %ul.list-group
         %li.list-group-item
           = @report.error_type
+      - if @report.stack_trace_message
+        %h3.text-info Message
+        %ul.list-group
+          %li.list-group-item
+            = @report.stack_trace_message
       %h3.text-info Call stack
       - if @report.application.programming_language == 'C#'
         %pre{ class: 'brush: csharp' }

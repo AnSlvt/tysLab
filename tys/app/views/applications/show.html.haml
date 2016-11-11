@@ -56,7 +56,7 @@
                       %span
                         .btn-toolbar
                           .btn-group
-                            = link_to "#{stack.stack_trace_message}", user_application_stack_trace_path(@application.author, @application, stack)
+                            = link_to "#{stack.error_type}", user_application_stack_trace_path(@application.author, @application, stack)
                     %td
                       = stack.application_version
                     - if stack.fixed

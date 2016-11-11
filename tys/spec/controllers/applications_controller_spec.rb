@@ -55,9 +55,7 @@ RSpec.describe ApplicationsController, type: :controller do
         expect {
           post :create, {  user_id: 'AnSlvt', application: create_params }, { user_id: user.id }
         }.to change(Application, :count).by(1)
-        expect(response).to render_template 'create'
         expect(Application.all.count).to_not eq(0)
-        expect(response.status).to eq 200
       end
     end
 

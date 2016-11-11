@@ -38,7 +38,7 @@ class ApplicationsController < ApplicationController
       render file: 'public/500.html', status: 500 and return
     end
     @application.users << current_user
-    flash[:notice] = "#{@application.application_name} was successfully created."
+    redirect_to user_application_path(current_user, @application), notice: "#{@application.application_name} was successfully created."
   end
 
   # GET /users/:user_id/applications

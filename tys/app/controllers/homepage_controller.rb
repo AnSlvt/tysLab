@@ -2,6 +2,7 @@ class HomepageController < ApplicationController
 
   # GET /
   def index
+    reset_session
   end
 
   # GET /search_results
