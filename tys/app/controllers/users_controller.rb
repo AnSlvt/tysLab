@@ -17,7 +17,8 @@ class UsersController < ApplicationController
     access_token = get_access_token(code)
     @@state = ""
     client = Octokit::Client.new(access_token: access_token)
-    SessionHandler.instance(client)
+    tok = SessionHandler.create_instance(client)
+    session[:token] = tok
     user = client.user
     session[:user_id] = user.login.to_s
     flash[:notice] = "#{user.login} succesfully logged in!"
@@ -46,6 +47,7 @@ class UsersController < ApplicationController
   end
 
   def logout
+    SessionHandler.remove(session[:token])
     reset_session
     redirect_to root_path, notice: "Logged out!"
   end

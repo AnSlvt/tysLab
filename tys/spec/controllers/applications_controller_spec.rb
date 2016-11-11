@@ -31,8 +31,8 @@ RSpec.describe ApplicationsController, type: :controller do
 
     context 'GET #new' do
       it 'render the new form and get the repos list' do
-        SessionHandler.instance(oct)
-        get :new, { user_id: 'AnSlvt' }, { user_id: user.id }
+        tok = SessionHandler.create_instance(oct)
+        get :new, { user_id: 'AnSlvt' }, { user_id: user.id, token: tok }
         expect(assigns(@application)[:application]).to be_kind_of(Application)
         expect(assigns(@repos)).to_not eq nil
         expect(response).to render_template 'new'

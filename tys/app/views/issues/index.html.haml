@@ -21,7 +21,7 @@
               %th.info
           %tbody
             - @stack_trace.issues.each do |issue|
-              - git_issue = issue.github_issue
+              - git_issue = issue.github_issue(@token)
               %tr
                 %td
                   = link_to "#{git_issue.title}", "https://github.com/#{issue.github_repository}/issues/#{issue.github_number}"

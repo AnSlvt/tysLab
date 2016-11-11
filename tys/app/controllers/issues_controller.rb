@@ -5,6 +5,7 @@ class IssuesController < ApplicationController
   def index
     @stack_trace = StackTrace.find_by(id: params[:stack_trace_id])
     render file: 'public/404.html', status: 404 and return unless @stack_trace
+    @token = session[:token]
   end
 
   def new
@@ -16,7 +17,7 @@ class IssuesController < ApplicationController
   def create
     @stack_trace = StackTrace.find_by(id: params[:stack_trace_id])
     render file: 'public/404.html', status: 404 and return unless @stack_trace
-    github_issue = SessionHandler.instance.create_stack_trace_issue(@stack_trace.application.github_repository, create_params[:title], create_params[:body])
+    github_issue = SessionHandler.retrieve_instance(session[:token]).create_stack_trace_issue(@stack_trace.application.github_repository, create_params[:title], create_params[:body])
     begin
       @issue = Issue.create!({
         github_repository: @stack_trace.application.github_repository,
@@ -33,7 +34,7 @@ class IssuesController < ApplicationController
     render file: 'public/403.html', status: 403 and return unless current_user.name == params[:user_id]
     @issue = Issue.find_by(github_number: params[:issue_id])
     render file: 'public/404.html', status: 404 and return unless @issue
-    SessionHandler.instance.add_label_to_a_stack_trace_issue(@issue.github_repository, @issue.github_number, [params[:label]])
+    SessionHandler.retrieve_instance(session[:token]).add_label_to_a_stack_trace_issue(@issue.github_repository, @issue.github_number, [params[:label]])
     redirect_to user_application_stack_trace_issues_path(@issue.stack_trace.application.author, @issue.stack_trace.application, @issue.stack_trace)
   end
 
@@ -42,9 +43,9 @@ class IssuesController < ApplicationController
     @issue = Issue.find_by(github_number: params[:issue_id])
     render file: 'public/404.html', status: 404 and return unless @issue
     if params[:state] == 'closed'
-      SessionHandler.instance.close_stack_trace_issue(@issue.github_repository, @issue.github_number)
+      SessionHandler.retrieve_instance(session[:token]).close_stack_trace_issue(@issue.github_repository, @issue.github_number)
     else
-      SessionHandler.instance.reopen_stack_trace_issue(@issue.github_repository, @issue.github_number)
+      SessionHandler.retrieve_instance(session[:token]).reopen_stack_trace_issue(@issue.github_repository, @issue.github_number)
     end
     redirect_to user_application_stack_trace_issues_path(@issue.stack_trace.application.author, @issue.stack_trace.application, @issue.stack_trace)
   end

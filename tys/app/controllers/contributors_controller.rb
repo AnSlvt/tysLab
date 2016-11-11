@@ -38,7 +38,7 @@ class ContributorsController < ApplicationController
     application = Application.find(params[:application_id])
 
     # Get the github contribs and all the existings users and compute the intersection
-    contribs = SessionHandler.instance.get_github_contributors(params[:repo]).map { |c| c[:login]}
+    contribs = SessionHandler.retrieve_instance(session[:token]).get_github_contributors(params[:repo]).map { |c| c[:login]}
     logger.info "Contributors -- #{contribs}"
     auth_users = User.all.map { |u| u.name }
     logger.info "Auth Users"

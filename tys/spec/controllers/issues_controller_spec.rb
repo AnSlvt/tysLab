@@ -51,8 +51,8 @@ RSpec.describe IssuesController, type: :controller do
 
     context 'POST #create' do
       it 'Creates a new issue' do
-        SessionHandler.instance(oct)
-        post :create, { user_id: user.id, application_id: app.id, stack_trace_id: stack.id, issue: { title: 'title', body: 'body' } }, { user_id: user.id }
+        tok = SessionHandler.create_instance(oct)
+        post :create, { user_id: user.id, application_id: app.id, stack_trace_id: stack.id, issue: { title: 'title', body: 'body' } }, { user_id: user.id, token: tok }
         expect(assigns(@stack_trace)[:stack_trace]).to be_kind_of(StackTrace)
         expect(assigns(@issue)[:issue]).to be_kind_of(Issue)
         expect(response).to redirect_to user_application_stack_trace_issues_path(user.id, app.id, stack.id)

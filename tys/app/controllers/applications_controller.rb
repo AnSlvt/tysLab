@@ -21,7 +21,9 @@ class ApplicationsController < ApplicationController
   # GET /users/:user_id/applications/new
   def new
     @application = Application.new
-    repos = SessionHandler.instance.get_repos(current_user)
+    logger.info "SESSION = #{session[:token]}"
+    logger.info "INSTANCE = #{SessionHandler.retrieve_instance(session[:token])}"
+    repos = SessionHandler.retrieve_instance(session[:token]).get_repos(current_user)
     @repos = repos.map do |r|
       r[:full_name] if r[:owner][:login] == current_user.name
     end
