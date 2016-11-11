@@ -69,8 +69,9 @@
             %li.list-group-item
               %span
                 .btn-toolbar.pull-right
-                  = button_to user_application_invitation_accept_invitation_path(inv.target_name, inv.application_id, inv, inv.invite_token), method: :get, class: "btn btn-success btn-sm" do
-                    %i.glyphicon.glyphicon-ok
-                  = button_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-danger btn-sm" do
-                    %i.glyphicon.glyphicon-trash
+                  .btn-group
+                    = link_to user_application_invitation_accept_invitation_path(inv.target_name, inv.application_id, inv, inv.invite_token), method: :get, class: "btn btn-success btn-sm" do
+                      %i.glyphicon.glyphicon-ok
+                    = link_to user_application_invitation_path(current_user, inv.application_id, inv), method: :delete, :class => "btn btn-danger btn-sm" do
+                      %i.glyphicon.glyphicon-trash
                 = "#{inv.leader_name} for #{Application.find_by(id: inv.application_id).application_name}"

@@ -4,7 +4,6 @@
       .page-header
         .btn-toolbar.pull-right
           .btn-group
-            = link_to 'Create a GitHub branch', '#', :class => "btn btn-success"
         %h1.text-info
           Stack Trace details
   .row
@@ -13,11 +12,14 @@
       %ul.list-group
         %li.list-group-item
           = @report.error_type
-      - if @report.stack_trace_message
+    - if @report.stack_trace_message
+      .col-md-6
         %h3.text-info Message
         %ul.list-group
           %li.list-group-item
             = @report.stack_trace_message
+  .row
+    .col-md-12
       %h3.text-info Call stack
       - if @report.application.programming_language == 'C#'
         %pre{ class: 'brush: csharp' }
@@ -28,6 +30,8 @@
       - elsif @report.application.programming_language == 'Objective-C'
         %pre{ class: 'brush: java' }
           = @report.stack_trace_text
+  .row
+    .col-md-6
       %h3.text-info Exception date
       %ul.list-group
         %li.list-group-item

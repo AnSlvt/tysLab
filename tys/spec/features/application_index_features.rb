@@ -25,5 +25,4 @@ RSpec.feature "Application Index features", type: :feature do
     expect(page).to have_text("Logged out!")
   end
 
-
 end

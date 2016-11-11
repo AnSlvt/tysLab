@@ -29,35 +29,42 @@
                   .btn-group
                     - git_issue.labels.each do |label|
                       - if label.name == 'bug'
-                        = link_to label.name, '#', :class => "btn btn-danger btn-xs"
+                        = link_to label.name, '#', :class => "btn btn-danger btn-xs", :disabled => "Disabled"
                       - elsif label.name == 'duplicate'
-                        = link_to label.name, '#', :class => "btn btn-warning btn-xs"
+                        = link_to label.name, '#', :class => "btn btn-warning btn-xs", :disabled => "Disabled"
                       - elsif label.name == 'question'
-                        = link_to label.name, '#', :class => "btn btn-info btn-xs"
+                        = link_to label.name, '#', :class => "btn btn-info btn-xs", :disabled => "Disabled"
                       - elsif label.name == 'enhancement'
-                        = link_to label.name, '#', :class => "btn btn-warning btn-xs"
+                        = link_to label.name, '#', :class => "btn btn-warning btn-xs", :disabled => "Disabled"
                       - elsif label.name == 'help wanted'
-                        = link_to label.name, '#', :class => "btn btn-success btn-xs"
+                        = link_to label.name, '#', :class => "btn btn-success btn-xs", :disabled => "Disabled"
                       - else
-                        = link_to label.name, '#', :class => "btn btn-default btn-xs"
-                    %a.btn.btn-default.btn-xs.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
-                      &nbsp
-                      %span.caret
-                      %span.sr-only Toggle Dropdown
-                    %ul.dropdown-menu
-                      %li
-                        = link_to "bug", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "bug")
-                        = link_to "duplicate", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "duplicate")
-                        = link_to "enhancement", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "enhancement")
-                        = link_to "help wanted", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "help wanted")
-                        = link_to "invalid", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "invalid")
-                        = link_to "question", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "question")
-                        = link_to "wontfix", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "wontfix")
+                        = link_to label.name, '#', :class => "btn btn-default btn-xs", :disabled => "Disabled"
+                    - if session[:user_id] == @stack_trace.application.author
+                      %a.btn.btn-default.btn-xs.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                        &nbsp
+                        %span.caret
+                        %span.sr-only Toggle Dropdown
+                      %ul.dropdown-menu
+                        %li
+                          = link_to "bug", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "bug")
+                          = link_to "duplicate", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "duplicate")
+                          = link_to "enhancement", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "enhancement")
+                          = link_to "help wanted", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "help wanted")
+                          = link_to "invalid", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "invalid")
+                          = link_to "question", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "question")
+                          = link_to "wontfix", user_application_stack_trace_issue_edit_label_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "wontfix")
                 %td
-                  - if git_issue.state == "open"
-                    = button_to "open", user_application_stack_trace_issue_edit_state_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "closed"), :class => 'btn btn-xs btn-success'
+                  - if session[:user_id] == @stack_trace.application.author
+                    - if git_issue.state == "open"
+                      = button_to "open", user_application_stack_trace_issue_edit_state_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "closed"), :class => 'btn btn-xs btn-success'
+                    - else
+                      = button_to "closed", user_application_stack_trace_issue_edit_state_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "open"), :class => 'btn btn-xs btn-danger'
                   - else
-                    = button_to "closed", user_application_stack_trace_issue_edit_state_path(@stack_trace.application.author, @stack_trace.application, @stack_trace, issue, "open"), :class => 'btn btn-xs btn-danger'
+                    - if git_issue.state == "open"
+                      = button_to "open", '#', :class => 'btn btn-xs btn-success', :disabled => "Disabled"
+                    - else
+                      = button_to "closed", '#', :class => 'btn btn-xs btn-danger', :disabled => "Disabled"
       - else
         %h5.text-muted
           (Nothing to show)
