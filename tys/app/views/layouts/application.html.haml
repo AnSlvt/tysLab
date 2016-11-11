@@ -29,7 +29,7 @@
                     %strong
                       = "#{current_user.name}"
                 %li
-                  %a{:href => users_logout_path}
+                  %a{:href => users_logout_path, :id => "Logout"}
                     %i.glyphicon.glyphicon-log-out
                     &nbsp;Logout
             - else

@@ -39,6 +39,7 @@ class ApplicationsController < ApplicationController
     end
     @application.users << current_user
     flash[:notice] = "#{@application.application_name} was successfully created."
+    redirect_to user_applications_path(current_user)
   end
 
   # GET /users/:user_id/applications

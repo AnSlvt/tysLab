@@ -27,6 +27,7 @@ gem 'octokit'
 gem 'haml'
 gem 'spectator-validates_email', :require => 'validates_email'
 gem 'syntax-highlighter-rails'
+gem 'rack_session_access'
 
 group :test do
   gem 'cucumber-rails', require: false
