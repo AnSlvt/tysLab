@@ -6,4 +6,7 @@ class Invitation < ActiveRecord::Base
   validates_associated :user
   validates_associated :application
   validates :invite_token, presence: true
+  validates :leader_name, presence: true
+  validates :target_name, presence: true
+  validates :application_id, presence: true 
 end

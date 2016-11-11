@@ -43,12 +43,12 @@
               = form_tag search_results_path, method: :get, :class => 'navbar-form' do
                 .form-group
                   = text_field_tag :search_params, params[:search_params], :id => "home_search", :class => 'form-control', :placeholder => "Users and apps...", :type => "search"
-                = submit_tag "Search", :for => "home_search", :class => "btn btn-primary"
+                = submit_tag "Search", id: "search", :for => "home_search", :class => "btn btn-primary"
             - else
               = form_tag user_search_path, method: :get, :class => 'navbar-form' do
                 .form-group
                   = text_field_tag :search_params, params[:search_params], :id => "home_search", :class => 'form-control', :placeholder => "Users...", :type => "search"
-                = submit_tag "Search", :for => "home_search", :class => "btn btn-primary"
+                = submit_tag "Search", id: 'search', :for => "home_search", :class => "btn btn-primary"
     %section
       - if flash[:notice]
         .container-fluid

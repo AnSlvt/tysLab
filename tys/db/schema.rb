@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20161103115357) do
     t.datetime "updated_at",                 null: false
   end
 
+  add_index "contributors", ["user_id", "application_id"], name: "index_contributors_on_user_id_and_application_id", unique: true, using: :btree
+
   create_table "feedbacks", force: :cascade do |t|
     t.text     "text",           limit: 65535, null: false
     t.string   "feedback_type",  limit: 255,   null: false
@@ -78,7 +80,9 @@ ActiveRecord::Schema.define(version: 20161103115357) do
     t.datetime "updated_at",                    null: false
     t.text     "bio",             limit: 65535
     t.string   "secondary_email", limit: 255
-    t.integer  "phone",           limit: 4
+    t.string   "phone",           limit: 255
   end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
 
 end

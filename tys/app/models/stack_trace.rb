@@ -3,7 +3,7 @@ class StackTrace < ActiveRecord::Base
   has_many :issues
 
   validates_associated :application
-  validates :error_type, :application_version, :crash_time, presence: true
+  validates :application_id, :error_type, :application_version, :crash_time, presence: true
 
   def self.st_order_by(unordered, sort_mode)
     if (!sort_mode || sort_mode == '1')
@@ -15,7 +15,7 @@ class StackTrace < ActiveRecord::Base
       out.reverse
     elsif (sort_mode == '2')
       # alphabetical order
-      unordered.sort_by { |ex| [ex.stack_trace_message, ex.error_type] }
+      unordered.sort_by { |ex| [ex.error_type, ex.stack_trace_message] }
     elsif (sort_mode == '3')
       # frequency order
       out = []

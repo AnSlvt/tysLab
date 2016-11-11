@@ -124,7 +124,7 @@ RSpec.describe StackTracesController, type: :controller do
           error_type: 'NullReferenceException',
           device: 'Lumia 950XL'
           )
-        not_allowed_user = User.create!(name: 'ZioPeppo', email: 'a@b.it')
+        not_allowed_user = User.create!(name: 'ZioPeppo', email: 'a@z.it')
         put :update, { user_id: user.id, application_id: app.id, id: stack_trace_local.id}, { user_id: not_allowed_user.id }
         expect(response).to render_template(file: "#{Rails.root}/public/403.html")
         expect(response.status).to eq 403
