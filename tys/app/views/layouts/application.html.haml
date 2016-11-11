@@ -25,6 +25,11 @@
             - if session[:user_id]
               %ul.nav.navbar-nav.navbar-right
                 %li
+                  %a{:href => '#'}
+                    %i.glyphicon.glyphicon-download-alt
+                    %strong
+                      = "Download library"
+                %li
                   %a{:href => user_path(current_user)}
                     %strong
                       = "#{current_user.name}"
@@ -34,6 +39,11 @@
                     &nbsp;Logout
             - else
               %ul.nav.navbar-nav.navbar-right
+                %li
+                  %a{:href => 'https://www.dropbox.com/s/063mtwq7cyybszn/TraceYourStackLibrary.zip?dl=0'}
+                    %i.glyphicon.glyphicon-download-alt
+                    %strong
+                      = "Download library"
                 %li
                   %a{:href => users_login_path}
                     %i.glyphicon.glyphicon-log-in
