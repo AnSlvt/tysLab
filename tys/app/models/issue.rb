@@ -2,6 +2,8 @@ class Issue < ActiveRecord::Base
   belongs_to :stack_trace
   validates_associated :stack_trace
   validates :github_repository, presence: true
+  validates :github_number, presence: true
+  validates :stack_trace_id, presence:true
 
   self.primary_key = "github_number"
 
