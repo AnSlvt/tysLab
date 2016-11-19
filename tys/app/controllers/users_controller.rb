@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   before_action :logged_in?, only: [:send_subscribe_mail, :show, :edit, :update]
   after_action :notification, only: :authorize
+  before_action :sweep_sessions
 
   @@state = ""
 

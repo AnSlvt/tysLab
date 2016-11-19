@@ -1,6 +1,7 @@
 class ApplicationsController < ApplicationController
 
   before_action :logged_in?, except: :show_public
+  before_action :sweep_sessions
 
   # GET /users/:user_id/applications/:id
   def show

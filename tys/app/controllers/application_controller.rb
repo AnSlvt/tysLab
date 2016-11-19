@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :current_user, :logged_in?, :notification
+  helper_method :current_user, :logged_in?, :notification, :sweep_sessions
 
   private
 
@@ -22,5 +22,9 @@ class ApplicationController < ActionController::Base
       @application = Application.find(payload[:application_id])
       ContributorsMailer.invitation_accepted(payload[:contr_id]).deliver_now if @application.author == session[:user_id]
     end
+  end
+
+  def sweep_sessions(time = "1 hour")
+    Session.sweep(time)
   end
 end

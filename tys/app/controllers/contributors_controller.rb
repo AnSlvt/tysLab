@@ -1,6 +1,7 @@
 class ContributorsController < ApplicationController
 
   before_action :logged_in?
+  before_action :sweep_sessions
 
   def index
     @application = Application.find(params[:application_id])

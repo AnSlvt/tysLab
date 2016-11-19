@@ -2,6 +2,7 @@ class InvitationsController < ApplicationController
 
   before_action :logged_in?, except: :accept
   before_action :is_allowed, only: :destroy
+  before_action :sweep_sessions
 
   # POST /users/:user_id/applications/:application_id/invitations
   def create

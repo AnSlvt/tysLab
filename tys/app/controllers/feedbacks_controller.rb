@@ -1,6 +1,7 @@
 class FeedbacksController < ApplicationController
 
   before_action :logged_in?, only: [:destroy, :new, :update, :edit]
+  before_action :sweep_sessions
 
   # GET /application/:application_id/feedbacks/:parent_id
   def new

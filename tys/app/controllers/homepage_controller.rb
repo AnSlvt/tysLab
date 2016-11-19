@@ -1,5 +1,7 @@
 class HomepageController < ApplicationController
 
+  before_action :sweep_sessions
+
   # GET /
   def index
     reset_session

@@ -1,6 +1,7 @@
 class IssuesController < ApplicationController
 
   before_action :logged_in?
+  before_action :sweep_sessions
 
   def index
     @stack_trace = StackTrace.find_by(id: params[:stack_trace_id])

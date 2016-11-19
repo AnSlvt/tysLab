@@ -1,6 +1,7 @@
 class StackTracesController < ApplicationController
 
   before_action :logged_in?, except: :create
+  before_action :sweep_sessions
 
   def new
     StackTrace.new
