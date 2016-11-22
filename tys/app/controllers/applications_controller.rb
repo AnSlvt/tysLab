@@ -22,21 +22,21 @@ class ApplicationsController < ApplicationController
   # GET /users/:user_id/applications/new
   def new
     @application = Application.new
-    logger.info "SESSION = #{session[:token]}"
-    logger.info "INSTANCE = #{SessionHandler.retrieve_instance(session[:token])}"
     repos = SessionHandler.retrieve_instance(session[:token]).get_repos(current_user)
     @repos = repos.map do |r|
       r[:full_name] if r[:owner][:login] == current_user.name
     end
     @repos.delete nil
     @repos.unshift nil
-    @token = SecureRandom.urlsafe_base64(nil, false)
   end
 
   # POST /users/:user_id/applications
   def create
+    token = SecureRandom.urlsafe_base64(nil, false)
+    @application = Application.new(create_params)
+    @application.authorization_token = token
     begin
-      @application = Application.create!(create_params)
+      @application.save!
     rescue ActiveRecord::RecordInvalid => invalid
       render file: 'public/500.html', status: 500 and return
     end
@@ -72,6 +72,6 @@ class ApplicationsController < ApplicationController
   private
   def create_params
     params.require(:application).permit(:application_name, :author,
-                  :programming_language, :github_repository, :authorization_token)
+                  :programming_language, :github_repository)
   end
 end
